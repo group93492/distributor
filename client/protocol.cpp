@@ -1,4 +1,4 @@
-#include "ChatMessages.h"
+#include "protocol.h"
 
 ChatMessageHeader::ChatMessageHeader(const ChatMessageBody *msgBody)
 {
@@ -31,12 +31,12 @@ bool ChatMessageHeader::unpack(QDataStream &stream)
 
 AuthorizationAnswer::AuthorizationAnswer()
 {
-    messageType = cmtAuthorizationAnswer;
+    messageType = mtAuthorizationAnswer;
 }
 
 AuthorizationAnswer::AuthorizationAnswer(QDataStream &stream)
 {
-    messageType = cmtAuthorizationAnswer;
+    messageType = mtAuthorizationAnswer;
     unpack(stream);
     //bad news that we will fault if stream.status is not ok because
     //we hadn't any chance to notice about it through constructor
@@ -65,12 +65,12 @@ bool AuthorizationAnswer::unpack(QDataStream &stream)
 
 AuthorizationRequest::AuthorizationRequest()
 {
-    messageType = cmtAuthorizationRequest;
+    messageType = mtAuthorizationRequest;
 }
 
 AuthorizationRequest::AuthorizationRequest(QDataStream &stream)
 {
-    messageType = cmtAuthorizationRequest;
+    messageType = mtAuthorizationRequest;
     unpack(stream);
     //bad news that we will fault if stream.status is not ok because
     //we hadn't any chance to notice about it through constructor
@@ -92,71 +92,14 @@ bool AuthorizationRequest::unpack(QDataStream &stream)
     return true;
 }
 
-ChannelMessage::ChannelMessage()
-{
-    messageType = cmtChannelMessage;
-}
-
-ChannelMessage::ChannelMessage(QDataStream &stream)
-{
-    messageType = cmtChannelMessage;
-    unpack(stream);
-    //bad news that we will fault if stream.status is not ok because
-    //we hadn't any chance to notice about it through constructor
-    //- one more lack of overloaded constructor
-}
-
-bool ChannelMessage::pack(QDataStream &stream) const
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream << sender << receiver << messageText;
-    return true;
-}
-
-bool ChannelMessage::unpack(QDataStream &stream)
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream >> sender >> receiver >> messageText;
-    return true;
-}
-
-DisconnectMessage::DisconnectMessage()
-{
-    messageType = cmtDisconnectMessage;
-}
-
-DisconnectMessage::DisconnectMessage(QDataStream &stream)
-{
-    messageType = cmtDisconnectMessage;
-    unpack(stream);
-}
-
-bool DisconnectMessage::pack(QDataStream &stream) const
-{
-    if (stream.status() != QDataStream::Ok)
-            return false;
-    stream << sender;
-    return true;
-}
-
-bool DisconnectMessage::unpack(QDataStream &stream)
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream >> sender;
-    return true;
-}
-
 RegistrationRequest::RegistrationRequest()
 {
-    messageType = cmtRegistrationRequest;
+    messageType = mtRegistrationRequest;
 }
 
 RegistrationRequest::RegistrationRequest(QDataStream &stream)
 {
-    messageType = cmtRegistrationRequest;
+    messageType = mtRegistrationRequest;
     unpack(stream);
 }
 
@@ -178,12 +121,12 @@ bool RegistrationRequest::unpack(QDataStream &stream)
 
 RegistrationAnswer::RegistrationAnswer()
 {
-    messageType = cmtRegistrationAnswer;
+    messageType = mtRegistrationAnswer;
 }
 
 RegistrationAnswer::RegistrationAnswer(QDataStream &stream)
 {
-    messageType = cmtRegistrationAnswer;
+    messageType = mtRegistrationAnswer;
     unpack(stream);
 }
 
@@ -208,499 +151,4 @@ bool RegistrationAnswer::unpack(QDataStream &stream)
     return true;
 }
 
-ChannelListMessage::ChannelListMessage()
-{
-    messageType = cmtChannelListMessage;
-}
 
-ChannelListMessage::ChannelListMessage(QDataStream &stream)
-{
-    messageType = cmtChannelListMessage;
-    unpack(stream);
-}
-
-bool ChannelListMessage::pack(QDataStream &stream) const
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream << quint8(listType) << channelList;
-    return true;
-}
-
-bool ChannelListMessage::unpack(QDataStream &stream)
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    quint8 tempType;
-    stream >> tempType >> channelList;
-    listType = (ChannelListMessage::ListType) tempType;
-    return true;
-}
-
-ChannelInfoMessage::ChannelInfoMessage()
-{
-    messageType = cmtChannelInfo;
-}
-
-ChannelInfoMessage::ChannelInfoMessage(QDataStream &stream)
-{
-    messageType = cmtChannelInfo;
-    unpack(stream);
-}
-
-bool ChannelInfoMessage::pack(QDataStream &stream) const
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream << channelName << channelDescription << channelTopic;
-    stream << channelMembers;
-    return true;
-}
-
-bool ChannelInfoMessage::unpack(QDataStream &stream)
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream >> channelName >> channelDescription >> channelTopic;
-    stream >> channelMembers;
-    return true;
-}
-
-bool ChannelListRequest::pack(QDataStream &stream) const
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream << quint8(listType) << nick;
-    return true;
-}
-
-bool ChannelListRequest::unpack(QDataStream &stream)
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    quint8 tempType;
-    stream >> tempType >> nick;
-    listType = (ChannelListRequest::ListType) tempType;
-    return true;
-}
-
-ChannelListRequest::ChannelListRequest()
-{
-    messageType = cmtChannelListRequest;
-}
-
-ChannelListRequest::ChannelListRequest(QDataStream &stream)
-{
-    messageType = cmtChannelListRequest;
-    unpack(stream);
-}
-
-ChannelJoinRequest::ChannelJoinRequest()
-{
-    messageType = cmtChannelJoinRequest;
-}
-
-ChannelJoinRequest::ChannelJoinRequest(QDataStream &stream)
-{
-    messageType = cmtChannelJoinRequest;
-    unpack(stream);
-}
-
-bool ChannelJoinRequest::pack(QDataStream &stream) const
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream << nick << channelName;
-    return true;
-}
-
-bool ChannelJoinRequest::unpack(QDataStream &stream)
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream >> nick >> channelName;
-    return true;
-}
-
-ChannelJoinResult::ChannelJoinResult()
-{
-    messageType = cmtChannelJoinResult;
-}
-
-ChannelJoinResult::ChannelJoinResult(QDataStream &stream)
-{
-    messageType = cmtChannelJoinResult;
-    unpack(stream);
-}
-
-bool ChannelJoinResult::pack(QDataStream &stream) const
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream << result << channelName;
-    return true;
-}
-
-bool ChannelJoinResult::unpack(QDataStream &stream)
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream >> result >> channelName;
-    return true;
-}
-
-ChannelLeaveMessage::ChannelLeaveMessage()
-{
-    messageType = cmtChannelLeaveMessage;
-}
-
-ChannelLeaveMessage::ChannelLeaveMessage(QDataStream &stream)
-{
-    messageType = cmtChannelLeaveMessage;
-    unpack(stream);
-}
-
-bool ChannelLeaveMessage::pack(QDataStream &stream) const
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream << nick << channelName;
-    return true;
-}
-
-bool ChannelLeaveMessage::unpack(QDataStream &stream)
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream >> nick >> channelName;
-    return true;
-}
-
-ChannelSystemMessage::ChannelSystemMessage()
-{
-    messageType = cmtChannelSystemMessage;
-}
-
-ChannelSystemMessage::ChannelSystemMessage(QDataStream &stream)
-{
-    messageType = cmtChannelSystemMessage;
-    unpack(stream);
-}
-
-bool ChannelSystemMessage::pack(QDataStream &stream) const
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream << channelName << message;
-    return true;
-}
-
-bool ChannelSystemMessage::unpack(QDataStream &stream)
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream >> channelName >> message;
-    return true;
-}
-
-ServerShutdownMessage::ServerShutdownMessage()
-{
-    messageType = cmtServerShutdownMessage;
-}
-
-ServerShutdownMessage::ServerShutdownMessage(QDataStream &stream)
-{
-    messageType = cmtServerShutdownMessage;
-    unpack(stream);
-}
-
-bool ServerShutdownMessage::pack(QDataStream &stream) const
-{
-    if(stream.status() != QDataStream::Ok)
-        return false;
-    stream << shutdownReason;
-    return true;
-}
-
-bool ServerShutdownMessage::unpack(QDataStream &stream)
-{
-    if(stream.status() != QDataStream::Ok)
-        return false;
-    stream >> shutdownReason;
-    return true;
-}
-
-ChannelCreateRequest::ChannelCreateRequest()
-{
-    messageType = cmtChannelCreateRequest;
-}
-
-ChannelCreateRequest::ChannelCreateRequest(QDataStream &stream)
-{
-     messageType = cmtChannelCreateRequest;
-     unpack(stream);
-}
-
-bool ChannelCreateRequest::pack(QDataStream &stream) const
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream << username << channelName << channelDescription << channelTopic;
-    return true;
-}
-
-bool ChannelCreateRequest::unpack(QDataStream &stream)
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream >> username >> channelName >> channelDescription >> channelTopic;
-    return true;
-}
-
-ChannelCreateResult::ChannelCreateResult()
-{
-    messageType = cmtChannelCreateResult;
-}
-
-ChannelCreateResult::ChannelCreateResult(QDataStream &stream)
-{
-    messageType = cmtChannelCreateResult;
-    unpack(stream);
-}
-
-bool ChannelCreateResult::pack(QDataStream &stream) const
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    if(answer)
-        stream << answer;
-    else
-        stream << answer << denialReason;
-    return true;
-}
-
-bool ChannelCreateResult::unpack(QDataStream &stream)
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream >> answer;
-    if(!answer)
-        stream >> denialReason;
-    return true;
-}
-
-ChannelUserList::ChannelUserList()
-{
-    messageType = cmtChannelUserList;
-}
-
-ChannelUserList::ChannelUserList(QDataStream &stream)
-{
-    messageType = cmtChannelUserList;
-    unpack(stream);
-}
-
-bool ChannelUserList::pack(QDataStream &stream) const
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream << channelName << userList;
-    return true;
-}
-
-bool ChannelUserList::unpack(QDataStream &stream)
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream >> channelName >> userList;
-    return true;
-}
-
-ChannelThemeChanged::ChannelThemeChanged()
-{
-    messageType = cmtChannelThemeChanged;
-}
-
-ChannelThemeChanged::ChannelThemeChanged(QDataStream &stream)
-{
-    messageType = cmtChannelThemeChanged;
-    unpack(stream);
-}
-
-bool ChannelThemeChanged::pack(QDataStream &stream) const
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream << channel << theme << username;
-    return true;
-}
-
-bool ChannelThemeChanged::unpack(QDataStream &stream)
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream >> channel >> theme >> username;
-    return true;
-}
-
-ClientStatusChanged::ClientStatusChanged()
-{
-    messageType = cmtClientStatusChanged;
-}
-
-ClientStatusChanged::ClientStatusChanged(QDataStream &stream)
-{
-    messageType = cmtClientStatusChanged;
-    unpack(stream);
-}
-
-bool ClientStatusChanged::pack(QDataStream &stream) const
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream << username << status;
-    return true;
-}
-
-bool ClientStatusChanged::unpack(QDataStream &stream)
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream >> username >> status;
-    return true;
-}
-
-UserInfoRequest::UserInfoRequest()
-{
-    messageType = cmtUserInfoRequest;
-}
-
-UserInfoRequest::UserInfoRequest(QDataStream &stream)
-{
-    messageType = cmtUserInfoRequest;
-    unpack(stream);
-}
-
-bool UserInfoRequest::pack(QDataStream &stream) const
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream << username;
-    return true;
-}
-
-bool UserInfoRequest::unpack(QDataStream &stream)
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream >> username;
-    return true;
-}
-
-UserInfoMessage::UserInfoMessage()
-{
-    messageType = cmtUserInfoMessage;
-}
-
-UserInfoMessage::UserInfoMessage(QDataStream &stream)
-{
-    messageType = cmtUserInfoMessage;
-    unpack(stream);
-}
-
-bool UserInfoMessage::pack(QDataStream &stream) const
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream << username << info;
-    return true;
-}
-
-bool UserInfoMessage::unpack(QDataStream &stream)
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream >> username >> info;
-    return true;
-}
-
-UserInfoChanged::UserInfoChanged()
-{
-    messageType = cmtUserInfoChanged;
-}
-
-UserInfoChanged::UserInfoChanged(QDataStream &stream)
-{
-    messageType = cmtUserInfoChanged;
-    unpack(stream);
-}
-
-bool UserInfoChanged::pack(QDataStream &stream) const
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream << username << info;
-    return true;
-}
-
-bool UserInfoChanged::unpack(QDataStream &stream)
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream >> username >> info;
-    return true;
-}
-
-PasswordChangeRequest::PasswordChangeRequest()
-{
-    messageType = cmtPasswordChangeRequest;
-}
-
-PasswordChangeRequest::PasswordChangeRequest(QDataStream &stream)
-{
-    messageType = cmtPasswordChangeResult;
-    unpack(stream);
-}
-
-bool PasswordChangeRequest::pack(QDataStream &stream) const
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream << username << oldPassword << newPassword;
-    return true;
-}
-
-bool PasswordChangeRequest::unpack(QDataStream &stream)
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream >> username >> oldPassword >> newPassword;
-    return true;
-}
-
-PasswordChangeResult::PasswordChangeResult()
-{
-    messageType = cmtPasswordChangeResult;
-}
-
-PasswordChangeResult::PasswordChangeResult(QDataStream &stream)
-{
-    messageType = cmtPasswordChangeResult;
-    unpack(stream);
-}
-
-bool PasswordChangeResult::pack(QDataStream &stream) const
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream << result;
-    return true;
-}
-
-bool PasswordChangeResult::unpack(QDataStream &stream)
-{
-    if (stream.status() != QDataStream::Ok)
-        return false;
-    stream >> result;
-    return true;
-}
