@@ -68,6 +68,17 @@ void AuthDialog::destructSocket()
     m_socket = NULL;
 }
 
+bool AuthDialog::checkInputFields()
+{
+    if(ui->loginEdit->text().isEmpty() || ui->passEdit->text().isEmpty())
+    {
+        QMessageBox::information(this, "Notification", "Empty login or password", QMessageBox::Ok);
+        return false;
+    }
+    else
+        return true;
+}
+
 void AuthDialog::connected()
 {
     if(m_action == AuthDialog::AuthorizationAction)
@@ -147,12 +158,16 @@ void AuthDialog::socketError(QAbstractSocket::SocketError error)
 
 void AuthDialog::on_loginButton_clicked()
 {
+    if(!checkInputFields())
+        return;
     m_action = AuthDialog::AuthorizationAction;
     createSocket();
 }
 
 void AuthDialog::on_regButton_clicked()
 {
+    if(!checkInputFields())
+        return;
     m_action = AuthDialog::RegistrationAction;
     createSocket();
 }

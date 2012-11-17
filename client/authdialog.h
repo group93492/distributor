@@ -33,6 +33,7 @@ private:
     void processMessage(AuthorizationAnswer *msg);
     void createSocket();
     void destructSocket();
+    bool checkInputFields();
 
 private slots:
     void connected();
