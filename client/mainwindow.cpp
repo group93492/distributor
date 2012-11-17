@@ -12,3 +12,8 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::startClient(QTcpSocket *socket, QString nick)
+{
+    show();
+}
