@@ -55,6 +55,9 @@ void AuthDialog::processMessage(AuthorizationAnswer *msg)
 void AuthDialog::createSocket()
 {
     m_socket = new QTcpSocket;
+    connect(m_socket, SIGNAL(connected()), this, SLOT(connected()));
+    connect(m_socket, SIGNAL(readyRead()), this, SLOT(gotMessage()));
+    connect(m_socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
     m_socket->connectToHost("localhost", 33034);
 }
 
