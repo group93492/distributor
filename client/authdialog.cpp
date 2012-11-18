@@ -8,6 +8,10 @@ AuthDialog::AuthDialog(QWidget *parent) :
     ui->setupUi(this);
     m_socket = NULL;
     m_nextBlockSize = 0;
+    m_session = new QSettings("session", QSettings::IniFormat);
+    ui->loginEdit->setText(m_session->value("nickname").toString());
+    move(QApplication::desktop()->geometry().width() / 2 - this->geometry().width() / 2,
+             QApplication::desktop()->geometry().height() / 2 - this->geometry().height() / 2);
 }
 
 AuthDialog::~AuthDialog()
@@ -46,6 +50,9 @@ void AuthDialog::processMessage(AuthorizationAnswer *msg)
     if(msg->authorizationResult)
     {
         emit startClient(m_socket, ui->loginEdit->text());
+        m_session->setValue("nickname", ui->loginEdit->text());
+        m_session->setValue("address", m_socket->peerAddress().toString());
+        m_session->setValue("port", m_socket->peerPort());
         hide();
     }
     else
@@ -58,7 +65,7 @@ void AuthDialog::createSocket()
     connect(m_socket, SIGNAL(connected()), this, SLOT(connected()));
     connect(m_socket, SIGNAL(readyRead()), this, SLOT(gotMessage()));
     connect(m_socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
-    m_socket->connectToHost("localhost", 33034);
+    m_socket->connectToHost(m_session->value("address", "localhost").toString(), m_session->value("port", 33034).toInt());
 }
 
 void AuthDialog::destructSocket()

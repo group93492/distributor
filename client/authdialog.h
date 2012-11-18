@@ -5,6 +5,9 @@
 #include <QtNetwork/QTcpSocket>
 #include <QMessageBox>
 #include <QCryptographicHash>
+#include <QSettings>
+#include <QHostAddress>
+#include <QDesktopWidget>
 #include "protocol.h"
 
 namespace Ui {
@@ -28,6 +31,7 @@ private:
     QTcpSocket *m_socket;
     quint16 m_nextBlockSize;
     AuthDialogAction m_action;
+    QSettings *m_session;
     void sendMessageToServer(ChatMessageBody *body);
     void processMessage(RegistrationAnswer *msg);
     void processMessage(AuthorizationAnswer *msg);
@@ -39,9 +43,7 @@ private slots:
     void connected();
     void gotMessage();
     void socketError(QAbstractSocket::SocketError error);
-
     void on_loginButton_clicked();
-
     void on_regButton_clicked();
 
 signals:
