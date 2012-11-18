@@ -16,12 +16,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     authdialog.cpp \
     protocol.cpp \
-    filemanager.cpp
+    filemanager.cpp \
+    tcpclient.cpp
 
 HEADERS  += mainwindow.h \
     authdialog.h \
     protocol.h \
-    filemanager.h
+    filemanager.h \
+    tcpclient.h
 
 FORMS    += mainwindow.ui \
     authdialog.ui
