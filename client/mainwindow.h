@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <QtNetwork/QTcpSocket>
+#include <QHostAddress>
+#include "filemanager.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,6 +23,7 @@ public slots:
     
 private:
     Ui::MainWindow *ui;
+    FileManager m_fileManager;
 };
 
 #endif // MAINWINDOW_H

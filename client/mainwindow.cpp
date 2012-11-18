@@ -6,6 +6,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->filesLayout->addWidget(&m_fileManager);
+    connect(&m_fileManager, SIGNAL(pathChanged(QString)), ui->pathLineEdit, SLOT(setText(QString)));
 }
 
 MainWindow::~MainWindow()
@@ -15,5 +17,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::startClient(QTcpSocket *socket, QString nick)
 {
+    ui->statusBar->showMessage("Connected!");
+    ui->nickLabel->setText(QString("Your nick: <b>%1</b>").arg(nick));
+    ui->serverLabel->setText("Server: " + socket->peerAddress().toString() + QString::number(socket->peerPort()));
     show();
 }
