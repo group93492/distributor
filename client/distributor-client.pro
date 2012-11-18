@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     authdialog.cpp \
-    protocol.cpp
+    protocol.cpp \
+    filemanager.cpp
 
 HEADERS  += mainwindow.h \
     authdialog.h \
-    protocol.h
+    protocol.h \
+    filemanager.h
 
 FORMS    += mainwindow.ui \
     authdialog.ui
