@@ -4,4 +4,6 @@ gem 'activerecord'
 class User < ActiveRecord::Base
 end
 
-puts User.count
+# User.create!(:name => 'lol')
+
+p User.all
