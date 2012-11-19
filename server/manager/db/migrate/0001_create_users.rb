@@ -1,11 +1,11 @@
 class CreateUsers < ActiveRecord::Migration
-  def self.up
+  def change
     create_table :users do |t|
-      t.column :name, :string, :null => false
+      t.string :login, :null => false
+      t.string :encrypted_password, :null => false
+      t.integer :rights, :default => 0
+
+      t.timestamps
     end
-  end
- 
-  def self.down
-    drop_table :users
   end
 end
