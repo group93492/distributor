@@ -49,6 +49,7 @@ void AuthDialog::processMessage(AuthorizationAnswer *msg)
 {
     if(msg->authorizationResult)
     {
+        m_socket->disconnect(this);
         emit startClient(m_socket, ui->loginEdit->text());
         m_session->setValue("nickname", ui->loginEdit->text());
         m_session->setValue("address", m_socket->peerAddress().toString());
