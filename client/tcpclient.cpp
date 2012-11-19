@@ -1,19 +1,19 @@
 #include "tcpclient.h"
 
-ChatClient::ChatClient(QObject *parent) :
+TcpClient::TcpClient(QObject *parent) :
     QObject(parent),
     m_nextBlockSize(0)
 {
 }
 
-void ChatClient::start(QTcpSocket *socket)
+void TcpClient::start(QTcpSocket *socket)
 {
     m_tcpSocket = socket;
     connect(m_tcpSocket, SIGNAL(readyRead()), SLOT(clientGotNewMessage()));
     connect(m_tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(socketError(QAbstractSocket::SocketError)));
 }
 
-void ChatClient::stop()
+void TcpClient::stop()
 {
     if(!m_tcpSocket)
         return;
@@ -21,7 +21,7 @@ void ChatClient::stop()
     delete m_tcpSocket;
 }
 
-void ChatClient::clientGotNewMessage()
+void TcpClient::clientGotNewMessage()
 {
     QTcpSocket *socket = (QTcpSocket*)sender();
     QDataStream input(socket);
@@ -52,12 +52,12 @@ void ChatClient::clientGotNewMessage()
     }
 }
 
-void ChatClient::socketError(QAbstractSocket::SocketError)
+void TcpClient::socketError(QAbstractSocket::SocketError)
 {
     QMessageBox::warning(0, "Error!", m_tcpSocket->errorString(), QMessageBox::Ok);
 }
 
-void ChatClient::sendMessageToServer(ChatMessageBody *msgBody) const
+void TcpClient::sendMessageToServer(ChatMessageBody *msgBody) const
 {
     QByteArray arrBlock;
     QDataStream output(&arrBlock, QIODevice::WriteOnly);

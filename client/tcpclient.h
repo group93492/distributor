@@ -7,7 +7,7 @@
 #include <QMessageBox>
 #include "protocol.h"
 
-class ChatClient : public QObject
+class TcpClient : public QObject
 {
     Q_OBJECT
 private:
@@ -16,7 +16,7 @@ private:
     void sendMessageToServer(ChatMessageBody *msgBody) const;
 
 public:
-    explicit ChatClient(QObject *parent = 0);
+    explicit TcpClient(QObject *parent = 0);
     void start(QTcpSocket *socket);
     void stop();
 
