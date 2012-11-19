@@ -12,6 +12,7 @@ AuthDialog::AuthDialog(QWidget *parent) :
     ui->loginEdit->setText(m_session->value("nickname").toString());
     move(QApplication::desktop()->geometry().width() / 2 - this->geometry().width() / 2,
              QApplication::desktop()->geometry().height() / 2 - this->geometry().height() / 2);
+    connect(ui->configButton, SIGNAL(clicked()), &m_configDialog, SLOT(show()));
 }
 
 AuthDialog::~AuthDialog()
@@ -95,7 +96,7 @@ void AuthDialog::connected()
         msg->username = ui->loginEdit->text();
         QByteArray array;
         array.append(ui->passEdit->text());
-        msg->password = QCryptographicHash::hash(array, QCryptographicHash::Md5);
+        msg->password = QCryptographicHash::hash(array, QCryptographicHash::Md5).toHex();
         sendMessageToServer(msg);
         delete msg;
     }
@@ -105,7 +106,7 @@ void AuthDialog::connected()
         msg->username = ui->loginEdit->text();
         QByteArray array;
         array.append(ui->passEdit->text());
-        msg->password = QCryptographicHash::hash(array, QCryptographicHash::Md5);
+        msg->password = QCryptographicHash::hash(array, QCryptographicHash::Md5).toHex();
         sendMessageToServer(msg);
         delete msg;
     }

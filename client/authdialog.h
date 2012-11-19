@@ -8,6 +8,7 @@
 #include <QSettings>
 #include <QHostAddress>
 #include <QDesktopWidget>
+#include "networkcfg.h"
 #include "protocol.h"
 
 namespace Ui {
@@ -32,6 +33,7 @@ private:
     quint16 m_nextBlockSize;
     AuthDialogAction m_action;
     QSettings *m_session;
+    NetworkCfg m_configDialog;
     void sendMessageToServer(ChatMessageBody *body);
     void processMessage(RegistrationAnswer *msg);
     void processMessage(AuthorizationAnswer *msg);

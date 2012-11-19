@@ -17,13 +17,16 @@ SOURCES += main.cpp\
     authdialog.cpp \
     protocol.cpp \
     filemanager.cpp \
-    tcpclient.cpp
+    tcpclient.cpp \
+    networkcfg.cpp
 
 HEADERS  += mainwindow.h \
     authdialog.h \
     protocol.h \
     filemanager.h \
-    tcpclient.h
+    tcpclient.h \
+    networkcfg.h
 
 FORMS    += mainwindow.ui \
-    authdialog.ui
+    authdialog.ui \
+    networkcfg.ui
