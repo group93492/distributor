@@ -30,6 +30,13 @@
          </widget>
         </item>
         <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Your rights:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QLabel" name="serverLabel">
           <property name="text">
            <string>Server:</string>
