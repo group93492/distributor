@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QtNetwork/QTcpSocket>
 #include <QHostAddress>
+#include "tcpclient.h"
 #include "filemanager.h"
 
 namespace Ui {
@@ -24,6 +25,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
     FileManager m_fileManager;
+    TcpClient m_tcpClient;
 };
 
 #endif // MAINWINDOW_H
