@@ -12,7 +12,9 @@ enum MessageType
     mtAuthorizationRequest,
     mtAuthorizationAnswer,
     mtRegistrationRequest,
-    mtRegistrationAnswer
+    mtRegistrationAnswer,
+    mtStartInfoRequest,
+    mtStartInfoAnswer
     /*etc*/
 };
 
@@ -78,6 +80,24 @@ public:
     RegistrationAnswer(QDataStream &stream);
     bool registrationResult;
     QString denialReason;
+    bool pack(QDataStream &stream) const;
+    bool unpack(QDataStream &stream);
+};
+
+class StartInfoRequest: public ChatMessageBody
+{
+public:
+    StartInfoRequest();
+};
+
+class StartInfoAnswer: public ChatMessageBody
+{
+public:
+    StartInfoAnswer();
+    StartInfoAnswer(QDataStream &stream);
+    QStringList folders;
+    QStringList files;
+    QByteArray rights;
     bool pack(QDataStream &stream) const;
     bool unpack(QDataStream &stream);
 };

@@ -151,4 +151,35 @@ bool RegistrationAnswer::unpack(QDataStream &stream)
     return true;
 }
 
+StartInfoRequest::StartInfoRequest()
+{
+    messageType = mtStartInfoRequest;
+}
 
+
+StartInfoAnswer::StartInfoAnswer()
+{
+    messageType = mtStartInfoAnswer;
+}
+
+StartInfoAnswer::StartInfoAnswer(QDataStream &stream)
+{
+    messageType = mtStartInfoAnswer;
+    unpack(stream);
+}
+
+bool StartInfoAnswer::pack(QDataStream &stream) const
+{
+    if(stream.status() != QDataStream::Ok)
+        return false;
+    stream << folders << files << rights;
+    return true;
+}
+
+bool StartInfoAnswer::unpack(QDataStream &stream)
+{
+    if(stream.status() != QDataStream::Ok)
+        return false;
+    stream >> folders >> files >> rights;
+    return true;
+}
