@@ -26,6 +26,9 @@ private:
     Ui::MainWindow *ui;
     FileManager m_fileManager;
     TcpClient m_tcpClient;
+
+private slots:
+    void setRigths(QString rigths);
 };
 
 #endif // MAINWINDOW_H

@@ -156,6 +156,22 @@ StartInfoRequest::StartInfoRequest()
     messageType = mtStartInfoRequest;
 }
 
+bool StartInfoRequest::pack(QDataStream &stream) const
+{
+    if(stream.status() != QDataStream::Ok)
+        return false;
+    stream << nickname;
+    return true;
+}
+
+bool StartInfoRequest::unpack(QDataStream &stream)
+{
+    if(stream.status() != QDataStream::Ok)
+        return false;
+    stream >> nickname;
+    return true;
+}
+
 
 StartInfoAnswer::StartInfoAnswer()
 {

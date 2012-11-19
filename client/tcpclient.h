@@ -14,15 +14,22 @@ private:
     QTcpSocket *m_tcpSocket;
     quint16 m_nextBlockSize;
     void sendMessageToServer(ChatMessageBody *msgBody) const;
+    void processMessage(StartInfoAnswer *msg);
+    QString m_nickname;
 
 public:
     explicit TcpClient(QObject *parent = 0);
-    void start(QTcpSocket *socket);
+    void start(QTcpSocket *socket, QString nickname);
     void stop();
+    void sendStartInfoRequest();
 
 private slots:
     void clientGotNewMessage();
     void socketError(QAbstractSocket::SocketError);
+
+signals:
+    void contents(QStringList folders, QStringList files);
+    void rigths(QString rights);
 };
 
 #endif // TCPCLIENT_H

@@ -8,6 +8,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     ui->filesLayout->addWidget(&m_fileManager);
     connect(&m_fileManager, SIGNAL(pathChanged(QString)), ui->pathLineEdit, SLOT(setText(QString)));
+    connect(&m_tcpClient, SIGNAL(contents(QStringList,QStringList)), &m_fileManager, SLOT(addContents(QStringList,QStringList)));
+    connect(&m_tcpClient, SIGNAL(rigths(QString)), this, SLOT(setRigths(QString)));
 }
 
 MainWindow::~MainWindow()
@@ -20,6 +22,11 @@ void MainWindow::startClient(QTcpSocket *socket, QString nick)
     ui->statusBar->showMessage("Connected!");
     ui->nickLabel->setText(QString("Your nick: <b>%1</b>").arg(nick));
     ui->serverLabel->setText("Server: " + socket->peerAddress().toString() + QString::number(socket->peerPort()));
-    m_tcpClient.start(socket);
+    m_tcpClient.start(socket, nick);
     show();
+}
+
+void MainWindow::setRigths(QString rigths)
+{
+    ui->rigthsLabel->setText("Your rigths:" + rigths);
 }

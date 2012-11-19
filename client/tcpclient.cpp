@@ -6,11 +6,13 @@ TcpClient::TcpClient(QObject *parent) :
 {
 }
 
-void TcpClient::start(QTcpSocket *socket)
+void TcpClient::start(QTcpSocket *socket, QString nickname)
 {
     m_tcpSocket = socket;
+    m_nickname = nickname;
     connect(m_tcpSocket, SIGNAL(readyRead()), SLOT(clientGotNewMessage()));
     connect(m_tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), SLOT(socketError(QAbstractSocket::SocketError)));
+    sendStartInfoRequest();
 }
 
 void TcpClient::stop()
@@ -19,6 +21,13 @@ void TcpClient::stop()
         return;
     m_tcpSocket->close();
     delete m_tcpSocket;
+}
+
+void TcpClient::sendStartInfoRequest()
+{
+    StartInfoRequest *msg = new StartInfoRequest();
+    msg->nickname = m_nickname;
+    sendMessageToServer(msg);
 }
 
 void TcpClient::clientGotNewMessage()
@@ -42,6 +51,14 @@ void TcpClient::clientGotNewMessage()
         delete header;
         switch (msgType)
         {
+        case mtStartInfoAnswer:
+        {
+            StartInfoAnswer *msg = new StartInfoAnswer(input);
+            processMessage(msg);
+            delete msg;
+            break;
+        }
+
         default:
             {
                 qDebug() << "Client received unknown-typed message" << msgType;
@@ -70,4 +87,17 @@ void TcpClient::sendMessageToServer(ChatMessageBody *msgBody) const
     output.device()->seek(0);
     output << quint16(arrBlock.size() - sizeof(quint16));
     m_tcpSocket->write(arrBlock);
+}
+
+void TcpClient::processMessage(StartInfoAnswer *msg)
+{
+    emit contents(msg->folders, msg->files);
+    QString userRigths;
+    if(msg->rights[0] == 1)
+        userRigths += "/Download/";
+    if(msg->rights[1] == 1)
+        userRigths += "/Upload/";
+    if(msg->rights[2] == 1)
+        userRigths += "/Delete/";
+    emit rigths(userRigths);
 }

@@ -88,6 +88,9 @@ class StartInfoRequest: public ChatMessageBody
 {
 public:
     StartInfoRequest();
+    QString nickname;
+    bool pack(QDataStream &stream) const;
+    bool unpack(QDataStream &stream);
 };
 
 class StartInfoAnswer: public ChatMessageBody
@@ -97,7 +100,7 @@ public:
     StartInfoAnswer(QDataStream &stream);
     QStringList folders;
     QStringList files;
-    QByteArray rights;
+    QString rights;
     bool pack(QDataStream &stream) const;
     bool unpack(QDataStream &stream);
 };
