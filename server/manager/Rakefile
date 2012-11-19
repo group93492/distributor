@@ -1,3 +1,5 @@
+require './config/application.rb'
+
 task :default => :migrate
 
 desc "Migrate the database through scripts in db/migrate. Target specific version with VERSION=x"
