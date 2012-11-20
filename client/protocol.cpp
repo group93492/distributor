@@ -74,6 +74,7 @@ AuthorizationRequest::AuthorizationRequest(QDataStream &stream)
     unpack(stream);
     //bad news that we will fault if stream.status is not ok because
     //we hadn't any chance to notice about it through constructor
+    //what about exception throwing?
 }
 
 bool AuthorizationRequest::pack(QDataStream &stream) const
