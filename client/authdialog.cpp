@@ -41,7 +41,7 @@ void AuthDialog::processMessage(RegistrationAnswer *msg)
         QMessageBox::information(this, "Registration", "You successfully registered", QMessageBox::Ok);
     else
         QMessageBox::information(this, "Registration", msg->denialReason, QMessageBox::Ok);
-    m_socket->deleteLater();
+    m_socket->close();
     ui->loginEdit->clear();
     ui->passEdit->clear();
 }
@@ -58,7 +58,10 @@ void AuthDialog::processMessage(AuthorizationAnswer *msg)
         hide();
     }
     else
+    {
         QMessageBox::information(this, "Authorization", msg->denialReason, QMessageBox::Ok);
+        m_socket->close();
+    }
 }
 
 void AuthDialog::createSocket()
@@ -155,7 +158,7 @@ void AuthDialog::gotMessage()
 void AuthDialog::socketError(QAbstractSocket::SocketError error)
 {
     QMessageBox::warning(this, "Error", m_socket->errorString() + ". Code Error: " + QString::number(error), QMessageBox::Ok);
-    m_socket->deleteLater();
+    m_socket->close();
 }
 
 void AuthDialog::on_loginButton_clicked()
