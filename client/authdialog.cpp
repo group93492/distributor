@@ -41,7 +41,7 @@ void AuthDialog::processMessage(RegistrationAnswer *msg)
         QMessageBox::information(this, "Registration", "You successfully registered", QMessageBox::Ok);
     else
         QMessageBox::information(this, "Registration", msg->denialReason, QMessageBox::Ok);
-    destructSocket();
+    m_socket->deleteLater();
     ui->loginEdit->clear();
     ui->passEdit->clear();
 }
@@ -68,13 +68,6 @@ void AuthDialog::createSocket()
     connect(m_socket, SIGNAL(readyRead()), this, SLOT(gotMessage()));
     connect(m_socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
     m_socket->connectToHost(m_session->value("address", "localhost").toString(), m_session->value("port", 33034).toInt());
-}
-
-void AuthDialog::destructSocket()
-{
-    m_socket->close();
-    delete m_socket;
-    m_socket = NULL;
 }
 
 bool AuthDialog::checkInputFields()
@@ -161,8 +154,8 @@ void AuthDialog::gotMessage()
 
 void AuthDialog::socketError(QAbstractSocket::SocketError error)
 {
-    QMessageBox::warning(this, "Error", m_socket->errorString(), QMessageBox::Ok);
-    destructSocket();
+    QMessageBox::warning(this, "Error", m_socket->errorString() + ". Code Error: " + QString::number(error), QMessageBox::Ok);
+    m_socket->deleteLater();
 }
 
 void AuthDialog::on_loginButton_clicked()

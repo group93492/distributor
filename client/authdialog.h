@@ -38,7 +38,6 @@ private:
     void processMessage(RegistrationAnswer *msg);
     void processMessage(AuthorizationAnswer *msg);
     void createSocket();
-    void destructSocket();
     bool checkInputFields();
 
 private slots:
