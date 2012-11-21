@@ -37,7 +37,6 @@ private:
     void sendMessageToServer(ChatMessageBody *body);
     void processMessage(RegistrationAnswer *msg);
     void processMessage(AuthorizationAnswer *msg);
-    void createSocket();
     bool checkInputFields();
 
 private slots:

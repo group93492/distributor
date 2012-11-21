@@ -9,9 +9,14 @@ AuthDialog::AuthDialog(QWidget *parent) :
     m_socket = NULL;
     m_nextBlockSize = 0;
     m_session = new QSettings("session", QSettings::IniFormat);
+    m_socket = new QTcpSocket;
     ui->loginEdit->setText(m_session->value("nickname").toString());
     move(QApplication::desktop()->geometry().width() / 2 - this->geometry().width() / 2,
              QApplication::desktop()->geometry().height() / 2 - this->geometry().height() / 2);
+    //connect part
+    connect(m_socket, SIGNAL(connected()), this, SLOT(connected()));
+    connect(m_socket, SIGNAL(readyRead()), this, SLOT(gotMessage()));
+    connect(m_socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
     connect(ui->configButton, SIGNAL(clicked()), &m_configDialog, SLOT(show()));
 }
 
@@ -62,15 +67,6 @@ void AuthDialog::processMessage(AuthorizationAnswer *msg)
         QMessageBox::information(this, "Authorization", msg->denialReason, QMessageBox::Ok);
         m_socket->close();
     }
-}
-
-void AuthDialog::createSocket()
-{
-    m_socket = new QTcpSocket;
-    connect(m_socket, SIGNAL(connected()), this, SLOT(connected()));
-    connect(m_socket, SIGNAL(readyRead()), this, SLOT(gotMessage()));
-    connect(m_socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
-    m_socket->connectToHost(m_session->value("address", "localhost").toString(), m_session->value("port", 33034).toInt());
 }
 
 bool AuthDialog::checkInputFields()
@@ -166,7 +162,7 @@ void AuthDialog::on_loginButton_clicked()
     if(!checkInputFields())
         return;
     m_action = AuthDialog::AuthorizationAction;
-    createSocket();
+    m_socket->connectToHost(m_session->value("address", "localhost").toString(), m_session->value("port", 33034).toInt());
 }
 
 void AuthDialog::on_regButton_clicked()
@@ -174,5 +170,5 @@ void AuthDialog::on_regButton_clicked()
     if(!checkInputFields())
         return;
     m_action = AuthDialog::RegistrationAction;
-    createSocket();
+    m_socket->connectToHost(m_session->value("address", "localhost").toString(), m_session->value("port", 33034).toInt());
 }
