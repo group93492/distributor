@@ -137,6 +137,13 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>loginEdit</tabstop>
+  <tabstop>passEdit</tabstop>
+  <tabstop>loginButton</tabstop>
+  <tabstop>regButton</tabstop>
+  <tabstop>configButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
