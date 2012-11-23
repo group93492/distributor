@@ -24,6 +24,15 @@ def read_quint64(socket)
   num.to_i(16)
 end
 
+def read_qbytearray(socket)
+  size = read_quint32(socket)
+  if size == 0xFFFFFFFF
+    nil
+  else
+    msg = ""
+    size.times { msg << read_quint8(socket).chr(Encoding::UTF_8) }
+  end
+end
 server = TCPServer.new('localhost', 33034)
 
 begin
