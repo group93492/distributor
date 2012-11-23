@@ -49,7 +49,7 @@ bool AuthorizationAnswer::pack(QDataStream &stream) const
     if(authorizationResult)
         stream << authorizationResult;
     else
-        stream << authorizationResult << denialReason;
+        stream << authorizationResult << denialReason.toUtf8();
     return true;
 }
 
@@ -57,9 +57,6 @@ bool AuthorizationAnswer::unpack(QDataStream &stream)
 {
     if (stream.status() != QDataStream::Ok)
         return false;
-    stream >> authorizationResult;
-    if(!authorizationResult)
-        stream >> denialReason;
     return true;
 }
 
@@ -81,7 +78,7 @@ bool AuthorizationRequest::pack(QDataStream &stream) const
 {
     if (stream.status() != QDataStream::Ok)
         return false;
-    stream << username << password;
+    stream << username.toUtf8() << password.toUtf8();
     return true;
 }
 
@@ -89,7 +86,6 @@ bool AuthorizationRequest::unpack(QDataStream &stream)
 {
     if (stream.status() != QDataStream::Ok)
         return false;
-    stream >> username >> password;
     return true;
 }
 
@@ -108,7 +104,7 @@ bool RegistrationRequest::pack(QDataStream &stream) const
 {
     if (stream.status() != QDataStream::Ok)
         return false;
-    stream << username << password;
+    stream << username.toUtf8() << password.toUtf8();
     return true;
 }
 
@@ -116,7 +112,6 @@ bool RegistrationRequest::unpack(QDataStream &stream)
 {
     if (stream.status() != QDataStream::Ok)
         return false;
-    stream >> username >> password;
     return true;
 }
 
@@ -135,10 +130,6 @@ bool RegistrationAnswer::pack(QDataStream &stream) const
 {
     if (stream.status() != QDataStream::Ok)
         return false;
-    if(registrationResult)
-        stream << registrationResult;
-    else
-        stream << registrationResult << denialReason;
     return true;
 }
 
@@ -148,7 +139,11 @@ bool RegistrationAnswer::unpack(QDataStream &stream)
         return false;
     stream >> registrationResult;
     if(!registrationResult)
-        stream >> denialReason;
+    {
+        QByteArray array;
+        stream >> array;
+        denialReason = array;
+    }
     return true;
 }
 
@@ -161,7 +156,7 @@ bool StartInfoRequest::pack(QDataStream &stream) const
 {
     if(stream.status() != QDataStream::Ok)
         return false;
-    stream << nickname;
+    stream << nickname.toUtf8();
     return true;
 }
 
@@ -169,7 +164,6 @@ bool StartInfoRequest::unpack(QDataStream &stream)
 {
     if(stream.status() != QDataStream::Ok)
         return false;
-    stream >> nickname;
     return true;
 }
 
@@ -189,7 +183,6 @@ bool StartInfoAnswer::pack(QDataStream &stream) const
 {
     if(stream.status() != QDataStream::Ok)
         return false;
-    stream << folders << files << rights;
     return true;
 }
 
@@ -197,6 +190,14 @@ bool StartInfoAnswer::unpack(QDataStream &stream)
 {
     if(stream.status() != QDataStream::Ok)
         return false;
-    stream >> folders >> files >> rights;
+    QList<QByteArray> foldersList;
+    QList<QByteArray> filesList;
+    QByteArray array;
+    stream >> foldersList >> filesList >> array;
+    for(int i = 0; foldersList.size(); i++)
+        folders.append(QString(foldersList.value(i)));
+    for(int i = 0; filesList.size(); i++)
+        files.append(QString(filesList.value(i)));
+    rights = array;
     return true;
 }
