@@ -31,6 +31,7 @@ def read_qbytearray(socket)
   else
     msg = ""
     size.times { msg << read_quint8(socket).chr(Encoding::UTF_8) }
+    msg
   end
 end
 server = TCPServer.new('localhost', 33034)
