@@ -45,16 +45,10 @@ begin
         p "size: #{size}"
         type = read_quint8(socket)
         p "type: #{type}"
-        username_size = read_quint32(socket)
-        p "username_size: #{username_size}"
         username = ""
-        username_size.times {username << socket.getbyte.to_s(10)}
+        username = read_qbytearray(socket)
         p "username: #{username}"
-        password_size = ""
-        4.times {password_size << socket.getbyte.to_s(16)}
-        p "password_size: #{password_size.to_i(16)}"
-        password = ""
-        password_size.to_i(16).times {password << socket.getbyte.to_s(10)}
+        password = read_qbytearray(socket)
         p "password: #{password}"
       end
     end
