@@ -8,6 +8,7 @@
 #include <QSettings>
 #include <QHostAddress>
 #include <QDesktopWidget>
+#include <QTimer>
 #include "networkcfg.h"
 #include "protocol.h"
 
@@ -34,10 +35,13 @@ private:
     AuthDialogAction m_action;
     QSettings *m_session;
     NetworkCfg m_configDialog;
+    QTimer m_timer;
     void sendMessageToServer(ChatMessageBody *body);
     void processMessage(RegistrationAnswer *msg);
     void processMessage(AuthorizationAnswer *msg);
     bool checkInputFields();
+    void blockInterface();
+    void unblockInterface();
 
 private slots:
     void connected();
@@ -45,6 +49,7 @@ private slots:
     void socketError(QAbstractSocket::SocketError error);
     void on_loginButton_clicked();
     void on_regButton_clicked();
+    void connectionTimeout();
 
 signals:
     void startClient(QTcpSocket *socket, QString nick);

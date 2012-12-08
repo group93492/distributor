@@ -10,6 +10,7 @@ AuthDialog::AuthDialog(QWidget *parent) :
     m_nextBlockSize = 0;
     m_session = new QSettings("session", QSettings::IniFormat);
     m_socket = new QTcpSocket;
+    m_timer.setSingleShot(true);
     ui->loginEdit->setText(m_session->value("nickname").toString());
     move(QApplication::desktop()->geometry().width() / 2 - this->geometry().width() / 2,
              QApplication::desktop()->geometry().height() / 2 - this->geometry().height() / 2);
@@ -18,6 +19,7 @@ AuthDialog::AuthDialog(QWidget *parent) :
     connect(m_socket, SIGNAL(readyRead()), this, SLOT(gotMessage()));
     connect(m_socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)));
     connect(ui->configButton, SIGNAL(clicked()), &m_configDialog, SLOT(show()));
+    connect(&m_timer, SIGNAL(timeout()), this, SLOT(connectionTimeout()));
 }
 
 AuthDialog::~AuthDialog()
@@ -42,6 +44,7 @@ void AuthDialog::sendMessageToServer(ChatMessageBody *body)
 
 void AuthDialog::processMessage(RegistrationAnswer *msg)
 {
+    unblockInterface();
     if(msg->registrationResult)
         QMessageBox::information(this, "Registration", "You successfully registered", QMessageBox::Ok);
     else
@@ -53,6 +56,7 @@ void AuthDialog::processMessage(RegistrationAnswer *msg)
 
 void AuthDialog::processMessage(AuthorizationAnswer *msg)
 {
+    unblockInterface();
     if(msg->authorizationResult)
     {
         m_socket->disconnect(this);
@@ -80,6 +84,18 @@ bool AuthDialog::checkInputFields()
         return true;
 }
 
+void AuthDialog::blockInterface()
+{
+    ui->loginButton->setEnabled(false);
+    ui->regButton->setEnabled(false);
+}
+
+void AuthDialog::unblockInterface()
+{
+    ui->loginButton->setEnabled(true);
+    ui->regButton->setEnabled(true);
+}
+
 void AuthDialog::connected()
 {
     if(m_action == AuthDialog::AuthorizationAction)
@@ -102,10 +118,12 @@ void AuthDialog::connected()
         sendMessageToServer(msg);
         delete msg;
     }
+    m_timer.start(10000);
 }
 
 void AuthDialog::gotMessage()
 {
+    m_timer.stop();
     QTcpSocket *socket = (QTcpSocket*)sender();
     if (socket == NULL)
         return;
@@ -153,7 +171,9 @@ void AuthDialog::gotMessage()
 
 void AuthDialog::socketError(QAbstractSocket::SocketError error)
 {
+    unblockInterface();
     QMessageBox::warning(this, "Error", m_socket->errorString() + ". Code Error: " + QString::number(error), QMessageBox::Ok);
+    m_timer.stop();
     m_socket->close();
 }
 
@@ -161,6 +181,7 @@ void AuthDialog::on_loginButton_clicked()
 {
     if(!checkInputFields())
         return;
+    blockInterface();
     m_action = AuthDialog::AuthorizationAction;
     m_socket->connectToHost(m_session->value("address", "localhost").toString(), m_session->value("port", 33034).toInt());
 }
@@ -169,6 +190,14 @@ void AuthDialog::on_regButton_clicked()
 {
     if(!checkInputFields())
         return;
+    blockInterface();
     m_action = AuthDialog::RegistrationAction;
     m_socket->connectToHost(m_session->value("address", "localhost").toString(), m_session->value("port", 33034).toInt());
+}
+
+void AuthDialog::connectionTimeout()
+{
+    unblockInterface();
+    QMessageBox::warning(this, "Error", "Server not answer!", QMessageBox::Ok);
+    m_socket->close();
 }
