@@ -1,4 +1,5 @@
 #include "filemanager.h"
+#include <QDebug>
 
 FileManagerItem::FileManagerItem(QListWidget *parent) :
     QListWidgetItem(parent)
@@ -28,14 +29,15 @@ FileManager::FileManager(QWidget *parent) :
 void FileManager::clickHandler(QListWidgetItem *item)
 {
     FileManagerItem *fmItem = dynamic_cast<FileManagerItem*>(item);
-    if(item->type() == ctFolder)
+    if(fmItem->contentType() == ctFolder)
     {
         m_currentPath = m_currentPath + fmItem->text() + "/";
         emit pathChanged(m_currentPath);
     }
-    else if(item->type() == ctBackFolder)
+    else if(fmItem->contentType() == ctBackFolder)
     {
-        m_currentPath = m_currentPath.left(m_currentPath.indexOf("/", m_currentPath.size() - 2));
+        m_currentPath = m_currentPath.left(m_currentPath.size() - 1);
+        m_currentPath = m_currentPath.left(m_currentPath.lastIndexOf("/") + 1);
         emit pathChanged(m_currentPath);
     }
     else
@@ -45,7 +47,8 @@ void FileManager::clickHandler(QListWidgetItem *item)
 void FileManager::addContents(QStringList FolderNames, QStringList FileNames)
 {
     clear();
-    addItem(new FileManagerItem(m_iconProvider.icon(QFileIconProvider::Folder), "..", ctBackFolder));
+    if(m_currentPath != "/")
+        addItem(new FileManagerItem(m_iconProvider.icon(QFileIconProvider::Folder), "..", ctBackFolder));
     for(int i = 0; i < FolderNames.size(); i++)
         addItem(new FileManagerItem(m_iconProvider.icon(QFileIconProvider::Folder), FolderNames.value(i), ctFolder));
     for(int i = 0; i < FileNames.size(); i++)
