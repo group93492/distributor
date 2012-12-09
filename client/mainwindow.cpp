@@ -10,6 +10,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&m_fileManager, SIGNAL(pathChanged(QString)), ui->pathLineEdit, SLOT(setText(QString)));
     connect(&m_tcpClient, SIGNAL(contents(QStringList,QStringList)), &m_fileManager, SLOT(addContents(QStringList,QStringList)));
     connect(&m_tcpClient, SIGNAL(rigths(QString)), this, SLOT(setRigths(QString)));
+//    QStringList list1;
+//    list1 << "Folder1" << "Folder2" << "Folder3";
+//    QStringList list2;
+//    list2 << "File1" << "File2" << "File3" << "File4";
+//    m_fileManager.addContents(list1, list2);
 }
 
 MainWindow::~MainWindow()
