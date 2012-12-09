@@ -26,7 +26,6 @@ void TcpClient::stop()
 void TcpClient::sendStartInfoRequest()
 {
     StartInfoRequest *msg = new StartInfoRequest();
-    msg->nickname = m_nickname;
     sendMessageToServer(msg);
 }
 

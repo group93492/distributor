@@ -90,7 +90,6 @@ class StartInfoRequest: public ChatMessageBody
 {
 public:
     StartInfoRequest();
-    QString nickname;
     bool pack(QDataStream &stream) const;
     bool unpack(QDataStream &stream);
 };
