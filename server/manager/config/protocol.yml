@@ -1,0 +1,22 @@
+packet_type:
+  0: unknown
+  1: authorization_request
+  2: authorization_answer
+  3: registration_request
+  4: registration_answer
+
+packet:
+  unknown:
+    ~
+  authorization_request:
+    username: string
+    password: string
+  authorization_answer:
+    authorization_result: bool
+    denial_reason: string
+  registration_request:
+    username: string
+    password: string
+  registration_answer:
+    registration_result: bool
+    denial_reason: string
