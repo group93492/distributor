@@ -201,3 +201,62 @@ bool StartInfoAnswer::unpack(QDataStream &stream)
     rights = array;
     return true;
 }
+
+
+FolderContentsRequest::FolderContentsRequest()
+{
+    messageType = mtFolderContentsRequest;
+}
+
+FolderContentsRequest::FolderContentsRequest(QDataStream &stream)
+{
+    messageType = mtFolderContentsRequest;
+    unpack(stream);
+}
+
+bool FolderContentsRequest::pack(QDataStream &stream) const
+{
+    if(stream.status() != QDataStream::Ok)
+        return false;
+    stream << path;
+    return true;
+}
+
+bool FolderContentsRequest::unpack(QDataStream &stream)
+{
+    if(stream.status() != QDataStream::Ok)
+        return false;
+    return true;
+}
+
+FolderContentsAnswer::FolderContentsAnswer()
+{
+    messageType = mtFolderContentsAnswer;
+}
+
+FolderContentsAnswer::FolderContentsAnswer(QDataStream &stream)
+{
+    messageType = mtFolderContentsAnswer;
+    unpack(stream);
+}
+
+bool FolderContentsAnswer::pack(QDataStream &stream) const
+{
+    if(stream.status() != QDataStream::Ok)
+        return false;
+    return true;
+}
+
+bool FolderContentsAnswer::unpack(QDataStream &stream)
+{
+    if(stream.status() != QDataStream::Ok)
+        return false;
+    QList<QByteArray> foldersList;
+    QList<QByteArray> filesList;
+    stream >> foldersList >> filesList;
+    for(int i = 0; foldersList.size(); i++)
+        folders.append(QString(foldersList.value(i)));
+    for(int i = 0; filesList.size(); i++)
+        files.append(QString(filesList.value(i)));
+    return true;
+}

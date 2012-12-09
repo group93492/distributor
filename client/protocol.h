@@ -14,7 +14,9 @@ enum MessageType
     mtRegistrationRequest,
     mtRegistrationAnswer,
     mtStartInfoRequest,
-    mtStartInfoAnswer
+    mtStartInfoAnswer,
+    mtFolderContentsRequest,
+    mtFolderContentsAnswer
     /*etc*/
 };
 
@@ -101,6 +103,27 @@ public:
     QStringList folders;
     QStringList files;
     QString rights;
+    bool pack(QDataStream &stream) const;
+    bool unpack(QDataStream &stream);
+};
+
+class FolderContentsRequest: public ChatMessageBody
+{
+public:
+    FolderContentsRequest();
+    FolderContentsRequest(QDataStream &stream);
+    QString path;
+    bool pack(QDataStream &stream) const;
+    bool unpack(QDataStream &stream);
+};
+
+class FolderContentsAnswer: public ChatMessageBody
+{
+public:
+    FolderContentsAnswer();
+    FolderContentsAnswer(QDataStream &stream);
+    QStringList folders;
+    QStringList files;
     bool pack(QDataStream &stream) const;
     bool unpack(QDataStream &stream);
 };

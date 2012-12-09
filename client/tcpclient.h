@@ -10,18 +10,23 @@
 class TcpClient : public QObject
 {
     Q_OBJECT
-private:
-    QTcpSocket *m_tcpSocket;
-    quint16 m_nextBlockSize;
-    void sendMessageToServer(ChatMessageBody *msgBody) const;
-    void processMessage(StartInfoAnswer *msg);
-    QString m_nickname;
 
 public:
     explicit TcpClient(QObject *parent = 0);
     void start(QTcpSocket *socket, QString nickname);
     void stop();
     void sendStartInfoRequest();
+
+public slots:
+    void requestFolderContents(QString path);
+
+private:
+    QTcpSocket *m_tcpSocket;
+    quint16 m_nextBlockSize;
+    void sendMessageToServer(ChatMessageBody *msgBody) const;
+    void processMessage(StartInfoAnswer *msg);
+    void processMessage(FolderContentsAnswer *msg);
+    QString m_nickname;
 
 private slots:
     void clientGotNewMessage();

@@ -30,6 +30,15 @@ void TcpClient::sendStartInfoRequest()
     sendMessageToServer(msg);
 }
 
+void TcpClient::requestFolderContents(QString path)
+{
+    qDebug() << "Request folder contents:" << path;
+    FolderContentsRequest *msg = new FolderContentsRequest;
+    msg->path = path;
+    sendMessageToServer(msg);
+    delete msg;
+}
+
 void TcpClient::clientGotNewMessage()
 {
     QTcpSocket *socket = (QTcpSocket*)sender();
@@ -58,7 +67,13 @@ void TcpClient::clientGotNewMessage()
             delete msg;
             break;
         }
-
+        case mtFolderContentsAnswer:
+        {
+            FolderContentsAnswer *msg = new FolderContentsAnswer(input);
+            processMessage(msg);
+            delete msg;
+            break;
+        }
         default:
             {
                 qDebug() << "Client received unknown-typed message" << msgType;
@@ -100,4 +115,9 @@ void TcpClient::processMessage(StartInfoAnswer *msg)
     if(msg->rights[2] == 1)
         userRigths += "/Delete/";
     emit rigths(userRigths);
+}
+
+void TcpClient::processMessage(FolderContentsAnswer *msg)
+{
+    emit contents(msg->folders, msg->files);
 }
