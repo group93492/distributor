@@ -198,6 +198,6 @@ void AuthDialog::on_regButton_clicked()
 void AuthDialog::connectionTimeout()
 {
     unblockInterface();
-    QMessageBox::warning(this, "Error", "Server not answer!", QMessageBox::Ok);
+    QMessageBox::warning(this, "Error", "Server doesn't respond!", QMessageBox::Ok);
     m_socket->close();
 }
