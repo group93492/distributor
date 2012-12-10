@@ -86,6 +86,7 @@
    <addaction name="actionDelete"/>
    <addaction name="separator"/>
    <addaction name="actionAboutProgram"/>
+   <addaction name="actionAboutQt"/>
   </widget>
   <action name="actionUpload">
    <property name="icon">
@@ -133,6 +134,18 @@
    </property>
    <property name="toolTip">
     <string>About program</string>
+   </property>
+  </action>
+  <action name="actionAboutQt">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/qt-logo.png</normaloff>icons/qt-logo.png</iconset>
+   </property>
+   <property name="text">
+    <string>aboutQt</string>
+   </property>
+   <property name="toolTip">
+    <string>About Qt</string>
    </property>
   </action>
  </widget>
