@@ -28,7 +28,7 @@ private:
     TcpClient m_tcpClient;
 
 private slots:
-    void setRigths(QString rigths);
+    void setRights(quint8 rights);
 };
 
 #endif // MAINWINDOW_H

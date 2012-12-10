@@ -62,6 +62,7 @@
     </item>
    </layout>
   </widget>
+  <widget class="QStatusBar" name="statusBar"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
@@ -79,8 +80,61 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionDownload"/>
+   <addaction name="actionUpload"/>
+   <addaction name="separator"/>
+   <addaction name="actionDelete"/>
+   <addaction name="separator"/>
+   <addaction name="actionAboutProgram"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionUpload">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/upload.png</normaloff>icons/upload.png</iconset>
+   </property>
+   <property name="text">
+    <string>Upload</string>
+   </property>
+   <property name="toolTip">
+    <string>Upload your folders and files to server</string>
+   </property>
+  </action>
+  <action name="actionDownload">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/download.png</normaloff>icons/download.png</iconset>
+   </property>
+   <property name="text">
+    <string>Download</string>
+   </property>
+   <property name="toolTip">
+    <string>Download selected folder and files</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/delete.png</normaloff>icons/delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete selected files and folders</string>
+   </property>
+  </action>
+  <action name="actionAboutProgram">
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/info.png</normaloff>icons/info.png</iconset>
+   </property>
+   <property name="text">
+    <string>aboutProgram</string>
+   </property>
+   <property name="toolTip">
+    <string>About program</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

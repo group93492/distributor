@@ -106,14 +106,7 @@ void TcpClient::sendMessageToServer(ChatMessageBody *msgBody) const
 void TcpClient::processMessage(StartInfoAnswer *msg)
 {
     emit contents(msg->folders, msg->files);
-    QString userRigths;
-    if(msg->rights[0] == 1)
-        userRigths += "/Download/";
-    if(msg->rights[1] == 1)
-        userRigths += "/Upload/";
-    if(msg->rights[2] == 1)
-        userRigths += "/Delete/";
-    emit rigths(userRigths);
+    emit rights(msg->rights);
 }
 
 void TcpClient::processMessage(FolderContentsAnswer *msg)

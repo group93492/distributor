@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&m_fileManager, SIGNAL(pathChanged(QString)), ui->pathLineEdit, SLOT(setText(QString)));
     connect(&m_fileManager, SIGNAL(pathChanged(QString)), &m_tcpClient, SLOT(requestFolderContents(QString)));
     connect(&m_tcpClient, SIGNAL(contents(QStringList,QStringList)), &m_fileManager, SLOT(addContents(QStringList,QStringList)));
-    connect(&m_tcpClient, SIGNAL(rigths(QString)), this, SLOT(setRigths(QString)));
+    connect(&m_tcpClient, SIGNAL(rights(quint8)), this, SLOT(setRights(quint8)));
 //    QStringList list1;
 //    list1 << "Folder1" << "Folder2" << "Folder3";
 //    QStringList list2;
@@ -32,7 +32,21 @@ void MainWindow::startClient(QTcpSocket *socket, QString nick)
     show();
 }
 
-void MainWindow::setRigths(QString rigths)
+void MainWindow::setRights(quint8 rights)
 {
-    ui->rigthsLabel->setText("Your rigths:" + rigths);
+    QString str;
+    if(rights / 128)
+        str += "/Download/";
+    else
+        ui->mainToolBar->actions()[0]->setEnabled(false);
+    if(rights / 64)
+        str += "/Upload/";
+    else
+        ui->mainToolBar->actions()[1]->setEnabled(false);
+    if(rights / 32)
+        str += "/Delete/";
+    else
+        ui->mainToolBar->actions()[3]->setEnabled(false);
+    ui->rigthsLabel->setText("Your rights:" + str);
+
 }

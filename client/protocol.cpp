@@ -186,13 +186,11 @@ bool StartInfoAnswer::unpack(QDataStream &stream)
         return false;
     QList<QByteArray> foldersList;
     QList<QByteArray> filesList;
-    QByteArray array;
-    stream >> foldersList >> filesList >> array;
+    stream >> foldersList >> filesList >> rights;
     for(int i = 0; foldersList.size(); i++)
         folders.append(QString(foldersList.value(i)));
     for(int i = 0; filesList.size(); i++)
         files.append(QString(filesList.value(i)));
-    rights = array;
     return true;
 }
 

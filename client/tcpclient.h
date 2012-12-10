@@ -34,7 +34,7 @@ private slots:
 
 signals:
     void contents(QStringList folders, QStringList files);
-    void rigths(QString rights);
+    void rights(quint8 rights);
 };
 
 #endif // TCPCLIENT_H

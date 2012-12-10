@@ -101,7 +101,7 @@ public:
     StartInfoAnswer(QDataStream &stream);
     QStringList folders;
     QStringList files;
-    QString rights;
+    quint8 rights;
     bool pack(QDataStream &stream) const;
     bool unpack(QDataStream &stream);
 };
