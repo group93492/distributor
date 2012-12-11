@@ -9,6 +9,11 @@ class TCPSocket
     self.method("read_#{type}").call
   end
 
+  def write_by_type(value, type)
+    # TODO: add check for non-existing method
+    self.method("write_#{type}").call(value)
+  end
+
   def read_uint8
     num = ""
     1.times {num << self.getbyte.to_s(16)}
