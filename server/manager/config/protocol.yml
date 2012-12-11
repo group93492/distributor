@@ -5,6 +5,10 @@ packet_type:
   3: registration_request
   4: registration_answer
 
+packet_head:
+  size: uint16
+  type: uint8
+
 packet:
   unknown:
     ~
