@@ -4,6 +4,12 @@ class TCPSocket
     Packet.new(self)
   end
 
+  # Type is mandatory argument.
+  def send_packet(params)
+    fail "type must be specified" if params[:type].nil?
+    self << Packet.serialize_packet(params, self)
+  end
+
   def read_by_type(type)
     # TODO: add check for non-existing method
     self.method("read_#{type}").call
