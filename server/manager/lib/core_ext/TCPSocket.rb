@@ -7,7 +7,9 @@ class TCPSocket
   # Type is mandatory argument.
   def send_packet(params)
     fail "type must be specified" if params['type'].nil?
-    self << Packet.serialize_packet(params)
+    serialized_packet = Packet.serialize_packet(params)
+    self << serialized_packet
+    serialized_packet
   end
 
   def read_by_type(type)
