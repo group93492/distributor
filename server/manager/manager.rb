@@ -11,7 +11,7 @@ require './config/application.rb'
 #   socket << packet
 # end
 
-server = TCPServer.new('localhost', 33034)
+server = TCPServer.new(SERVER_IP, SERVER_PORT)
 
 begin
   puts "Server started on #{server.connect_address.ip_unpack.join(":")}"

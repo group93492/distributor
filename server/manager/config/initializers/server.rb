@@ -1,0 +1,2 @@
+SERVER_PORT = 33034
+SERVER_IP = 'localhost'
