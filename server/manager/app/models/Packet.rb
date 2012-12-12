@@ -26,11 +26,12 @@ class Packet < OpenStruct
 
   # Type is mandatory argument and it should be already specified.
   def serialize_packet
-    fail "type must be specified" if self.type.nil?
+    fail "type should be specified" if self.type.nil?
     serialized_packet = ""
     @@protocol['packet'][self.type].each_pair do |field_name, field_type|
       serialized_packet.write_by_type(self.send(field_name), field_type)
     end
+    # serialize head and add it to the begin of packet
     serialized_packet.prepend(serialize_head(serialized_packet))
     serialized_packet
   end
@@ -47,7 +48,7 @@ class Packet < OpenStruct
 
   # Type should be already specified.
   def serialize_head(serialized_body)
-    fail "type must be specified" if self.type.nil?
+    fail "type should be specified" if self.type.nil?
     head = ""
     head_size_type = @@protocol['packet_head']['size']
     head_type_type = @@protocol['packet_head']['type']
