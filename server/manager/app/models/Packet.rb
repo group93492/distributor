@@ -63,7 +63,9 @@ class Packet < OpenStruct
     @@protocol['packet_head'].each_pair do |key, val|
       self.send("#{key}=", socket.read_by_type(val))
     end
-    self.type = @@protocol['packet_type'][self.type] # convert type id to human string
+    # convert type id to human string
+    # set unknown type if needs
+    self.type = @@protocol['packet_type'][self.type] || @@protocol['packet_type'][0]
   end
 
   def read_body!(socket)
