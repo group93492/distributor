@@ -22,7 +22,7 @@ class Packet < OpenStruct
 
   # Type is mandatory argument and it should be already specified.
   def serialize_packet
-    fail "type must be specified" if params[:type].nil?
+    fail "type must be specified" if self.type.nil?
     serialized_packet = ""
     @@protocol['packet'][self.type].each_pair do |field_name, field_type|
       serialized_packet.write_by_type(self.send(field_name), field_type)
