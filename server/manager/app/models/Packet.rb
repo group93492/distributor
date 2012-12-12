@@ -1,9 +1,13 @@
 class Packet < OpenStruct
   @@protocol = YAML::load(File.open(File.expand_path('../../../config/protocol.yml', __FILE__)))
 
-  def initialize(socket)
+  def initialize(*args)
     super()
-    read!(socket)
+    case args.size
+    when 0
+    when 1
+      read!(args.pop)
+    end
   end
 
   # Read next packet from socket. Its type should be specified in protocol.yml
