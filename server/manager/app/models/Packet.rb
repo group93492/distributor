@@ -4,7 +4,6 @@ class Packet < OpenStruct
   def initialize(*args)
     super()
     case args.size
-    when 0
     when 1
       read!(args.pop)
     end
