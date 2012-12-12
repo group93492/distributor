@@ -28,5 +28,10 @@ class String
     self << [bool.to_i].pack("C")
   end
 
+  def write_by_type(value, type)
+    # TODO: add check for non-existing method
+    self.method("write_#{type}").call(value)
+  end
+
   alias_method :write_string, :write_qbytearray
 end
