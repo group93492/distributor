@@ -36,8 +36,6 @@ class Packet < OpenStruct
     serialized_packet
   end
 
-  private
-
   # Type is mandatory argument.
   # Make packet in human readable format. Size field would be filled on sending.
   def make!(params = {})
@@ -45,6 +43,8 @@ class Packet < OpenStruct
     make_head!(params)
     make_body!(params)
   end
+
+  private
 
   # Type should be already specified.
   def serialize_head(serialized_body)
