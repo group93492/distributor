@@ -42,6 +42,7 @@ class Packet < OpenStruct
     fail "type should be specified" if params['type'].nil?
     make_head!(params)
     make_body!(params)
+    self
   end
 
   private
