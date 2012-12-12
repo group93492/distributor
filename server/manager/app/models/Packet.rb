@@ -14,7 +14,7 @@ class Packet < OpenStruct
   end
 
   # Type is mandatory argument. Type should be in params.
-  def self.serialize_packet(params, socket)
+  def self.serialize_packet(params)
     packet = Packet.new
     packet.make!(params)
     packet.serialize_packet
