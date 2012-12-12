@@ -53,7 +53,8 @@ class Packet < OpenStruct
     head_size_type = @@protocol['packet_head']['size']
     head_type_type = @@protocol['packet_head']['type']
     head.write_by_type(serialized_body.size, head_size_type)
-    head.write_by_type(self.type, head_type_type)
+    serialized_type = @@protocol['packet_type'].key(self.type)
+    head.write_by_type(serialized_type, head_type_type)
     head
   end
 
@@ -61,18 +62,17 @@ class Packet < OpenStruct
     @@protocol['packet_head'].each_pair do |key, val|
       self.send("#{key}=", socket.read_by_type(val))
     end
+    self.type = @@protocol['packet_type'][self.type] # convert type id to human string
   end
 
   def read_body!(socket)
-    packet_type = @@protocol['packet_type'][self.type]
-    @@protocol['packet'][packet_type].each_pair do |key, val|
+    @@protocol['packet'][self.type].each_pair do |key, val|
       self.send("#{key}=", socket.read_by_type(val))
     end
   end
 
   def make_body!(params = {})
-    packet_type = @@protocol['packet_type'][self.type]
-    @@protocol['packet'][packet_type].each_key do |key|
+    @@protocol['packet'][self.type].each_key do |key|
       self.send("#{key}=", params[key])
     end
   end
