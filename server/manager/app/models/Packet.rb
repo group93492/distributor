@@ -36,7 +36,7 @@ class Packet < OpenStruct
   # Type is mandatory argument.
   # Make packet in human readable format. Size field would be filled on sending.
   def make!(params = {})
-    fail "type must be specified" if params[:type].nil?
+    fail "type should be specified" if params['type'].nil?
     make_head!(params)
     make_body!(params)
   end
