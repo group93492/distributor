@@ -10,4 +10,19 @@ class User < ActiveRecord::Base
     User.create(:login => registration_request.username,
                 :encrypted_password => registration_request.password)
   end
+
+  def self.authorize_user(authorization_request, socket)
+    user = User.find_by_login_and_encrypted_password(authorization_request.username,
+                                                     authorization_request.password)
+    if user
+      user.authanticate!(socket)
+    else
+      nil
+    end
+  end
+
+  def authanticate!(socket)
+    self.online = true
+    self.socket = socket
+  end
 end
