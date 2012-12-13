@@ -18,3 +18,6 @@ log/*
 .yardoc
 _yardoc
 doc/
+
+# test db
+db/test*
