@@ -1,16 +1,5 @@
 require './config/application.rb'
 
-# def write_registration_denied(socket)
-#   packet = ""
-#   write_uint8(4, packet)
-#   write_bool(false, packet)
-#   write_qbytearray("you are not SQUARED", packet)
-#   packet_size = ""
-#   write_uint16(packet.size, packet_size)
-#   packet.prepend(packet_size)
-#   socket << packet
-# end
-
 server = TCPServer.new(SERVER_IP, SERVER_PORT)
 
 def confirm_registration(socket)
