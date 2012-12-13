@@ -1,3 +1,4 @@
+#!/bin/ruby
 require './config/application.rb'
 
 server = TCPServer.new(SERVER_IP, SERVER_PORT)
