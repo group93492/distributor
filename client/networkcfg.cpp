@@ -9,6 +9,7 @@ NetworkCfg::NetworkCfg(QWidget *parent) :
     QIntValidator *validator = new QIntValidator(0, 65535);
     ui->mainPortEdit->setValidator(validator);
     ui->filesPortEdit->setValidator(validator);
+    on_cancelButton_clicked();
 }
 
 NetworkCfg::~NetworkCfg()

@@ -62,8 +62,6 @@ void AuthDialog::processMessage(AuthorizationAnswer *msg)
         m_socket->disconnect(this);
         emit startClient(m_socket, ui->loginEdit->text());
         m_session->setValue("nickname", ui->loginEdit->text());
-        m_session->setValue("address", m_socket->peerAddress().toString());
-        m_session->setValue("port", m_socket->peerPort());
         hide();
     }
     else
