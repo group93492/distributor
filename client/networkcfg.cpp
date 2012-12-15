@@ -7,7 +7,8 @@ NetworkCfg::NetworkCfg(QWidget *parent) :
 {
     ui->setupUi(this);
     QIntValidator *validator = new QIntValidator(0, 65535);
-    ui->portEdit->setValidator(validator);
+    ui->mainPortEdit->setValidator(validator);
+    ui->filesPortEdit->setValidator(validator);
 }
 
 NetworkCfg::~NetworkCfg()
@@ -19,7 +20,8 @@ void NetworkCfg::on_applyButton_clicked()
 {
     QSettings settings("session", QSettings::IniFormat);
     settings.setValue("address", ui->IPEdit->text());
-    settings.setValue("port", ui->portEdit->text());
+    settings.setValue("main_port", ui->mainPortEdit->text());
+    settings.setValue("files_port", ui->filesPortEdit->text());
     hide();
 }
 
@@ -27,6 +29,7 @@ void NetworkCfg::on_cancelButton_clicked()
 {
     QSettings settings("session", QSettings::IniFormat);
     ui->IPEdit->setText(settings.value("address", "localhost").toString());
-    ui->portEdit->setText(settings.value("port", "33034").toString());
+    ui->mainPortEdit->setText(settings.value("main_port", "33034").toString());
+    ui->filesPortEdit->setText(settings.value("files_port", "33035").toString());
     hide();
 }
