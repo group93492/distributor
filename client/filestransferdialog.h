@@ -1,5 +1,5 @@
-#ifndef FILESTRANSFER_H
-#define FILESTRANSFER_H
+#ifndef FILESTRANSFERDIALOG_H
+#define FILESTRANSFERDIALOG_H
 
 #include <QWidget>
 
@@ -28,6 +28,9 @@ private:
     Ui::FilesTransfer *ui;
     qint8 m_currentFileCount;
     qint8 m_filesCount;
+    quint32 m_speed;
+    quint8 m_updateCounter;
+    void evalTime();
 };
 
-#endif // FILESTRANSFER_H
+#endif // FILESTRANSFERDIALOG_H
