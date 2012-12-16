@@ -306,3 +306,58 @@ bool FileInfo::unpack(QDataStream &stream)
     fileName = array2;
     return true;
 }
+
+
+ActionWithFileRequest::ActionWithFileRequest()
+{
+    messageType = mtActionWithFileRequest;
+}
+
+ActionWithFileRequest::ActionWithFileRequest(QDataStream &stream)
+{
+    messageType = mtActionWithFileRequest;
+    unpack(stream);
+}
+
+bool ActionWithFileRequest::pack(QDataStream &stream) const
+{
+    if(stream.status() != QDataStream::Ok)
+        return false;
+    stream << actionType  << fileName.toUtf8();
+    return true;
+}
+
+bool ActionWithFileRequest::unpack(QDataStream &stream)
+{
+    if(stream.status() != QDataStream::Ok)
+        return false;
+    return true;
+}
+
+ActionWithFileAnswer::ActionWithFileAnswer()
+{
+    messageType = mtActionWithFileAnswer;
+}
+
+ActionWithFileAnswer::ActionWithFileAnswer(QDataStream &stream)
+{
+    messageType = mtActionWithFileAnswer;
+    unpack(stream);
+}
+
+bool ActionWithFileAnswer::pack(QDataStream &stream) const
+{
+    if(stream.status() != QDataStream::Ok)
+        return false;
+    return true;
+}
+
+bool ActionWithFileAnswer::unpack(QDataStream &stream)
+{
+    if(stream.status() != QDataStream::Ok)
+        return false;
+    QByteArray array;
+    stream >> array;
+    key = array;
+    return true;
+}

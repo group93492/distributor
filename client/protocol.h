@@ -18,7 +18,9 @@ enum MessageType
     mtFolderContentsRequest,
     mtFolderContentsAnswer,
     mtTransferInfo,
-    mtFileInfo
+    mtFileInfo,
+    mtActionWithFileRequest,
+    mtActionWithFileAnswer
     /*etc*/
 };
 
@@ -44,7 +46,7 @@ public:
     bool unpack(QDataStream &stream);
 };
 
-class AuthorizationAnswer : public ChatMessageBody
+class AuthorizationAnswer: public ChatMessageBody
 {
 public:
     AuthorizationAnswer();
@@ -129,7 +131,7 @@ public:
     bool unpack(QDataStream &stream);
 };
 
-class TransferInfo : public ChatMessageBody
+class TransferInfo: public ChatMessageBody
 {
 public:
     TransferInfo();
@@ -141,7 +143,7 @@ public:
     bool unpack(QDataStream &stream);
 };
 
-class FileInfo : public ChatMessageBody
+class FileInfo: public ChatMessageBody
 {
 public:
     FileInfo();
@@ -149,6 +151,27 @@ public:
     QString path;
     QString fileName;
     qint64 fileSize;
+    bool pack(QDataStream &stream) const;
+    bool unpack(QDataStream &stream);
+};
+
+class ActionWithFileRequest: public ChatMessageBody
+{
+public:
+    ActionWithFileRequest();
+    ActionWithFileRequest(QDataStream &stream);
+    quint8 actionType;
+    QString fileName;
+    bool pack(QDataStream &stream) const;
+    bool unpack(QDataStream &stream);
+};
+
+class ActionWithFileAnswer : public ChatMessageBody
+{
+public:
+    ActionWithFileAnswer();
+    ActionWithFileAnswer(QDataStream &stream);
+    QString key;
     bool pack(QDataStream &stream) const;
     bool unpack(QDataStream &stream);
 };
