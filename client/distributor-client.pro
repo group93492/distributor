@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     filemanager.cpp \
     tcpclient.cpp \
     networkcfg.cpp \
-    filestransferdialog.cpp
+    filestransferdialog.cpp \
+    filehandlers.cpp
 
 HEADERS  += mainwindow.h \
     authdialog.h \
@@ -27,7 +28,8 @@ HEADERS  += mainwindow.h \
     filemanager.h \
     tcpclient.h \
     networkcfg.h \
-    filestransferdialog.h
+    filestransferdialog.h \
+    filehandlers.h
 
 FORMS    += mainwindow.ui \
     authdialog.ui \
