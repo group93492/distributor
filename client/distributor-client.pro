@@ -18,15 +18,18 @@ SOURCES += main.cpp\
     protocol.cpp \
     filemanager.cpp \
     tcpclient.cpp \
-    networkcfg.cpp
+    networkcfg.cpp \
+    filestransferdialog.cpp
 
 HEADERS  += mainwindow.h \
     authdialog.h \
     protocol.h \
     filemanager.h \
     tcpclient.h \
-    networkcfg.h
+    networkcfg.h \
+    filestransferdialog.h
 
 FORMS    += mainwindow.ui \
     authdialog.ui \
-    networkcfg.ui
+    networkcfg.ui \
+    filestransferdialog.ui
