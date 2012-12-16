@@ -1,5 +1,5 @@
-#include "networkcfg.h"
-#include "ui_networkcfg.h"
+#include "networkcfgdialog.h"
+#include "ui_networkcfgdialog.h"
 
 NetworkCfg::NetworkCfg(QWidget *parent) :
     QWidget(parent),

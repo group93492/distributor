@@ -1,5 +1,5 @@
-#ifndef NETWORKCFG_H
-#define NETWORKCFG_H
+#ifndef NETWORKCFGDIALOG_H
+#define NETWORKCFGDIALOG_H
 
 #include <QWidget>
 #include <QIntValidator>
@@ -26,4 +26,4 @@ private:
     Ui::NetworkCfg *ui;
 };
 
-#endif // NETWORKCFG_H
+#endif // NETWORKCFGDIALOG_H

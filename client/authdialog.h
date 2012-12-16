@@ -9,7 +9,7 @@
 #include <QHostAddress>
 #include <QDesktopWidget>
 #include <QTimer>
-#include "networkcfg.h"
+#include "networkcfgdialog.h"
 #include "protocol.h"
 
 namespace Ui {
