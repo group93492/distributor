@@ -16,7 +16,9 @@ enum MessageType
     mtStartInfoRequest,
     mtStartInfoAnswer,
     mtFolderContentsRequest,
-    mtFolderContentsAnswer
+    mtFolderContentsAnswer,
+    mtTransferInfo,
+    mtFileInfo
     /*etc*/
 };
 
@@ -123,6 +125,30 @@ public:
     FolderContentsAnswer(QDataStream &stream);
     QStringList folders;
     QStringList files;
+    bool pack(QDataStream &stream) const;
+    bool unpack(QDataStream &stream);
+};
+
+class TransferInfo : public ChatMessageBody
+{
+public:
+    TransferInfo();
+    TransferInfo(QDataStream &stream);
+    qint64 filesSize;
+    quint32 filesNumber;
+    QString key;
+    bool pack(QDataStream &stream) const;
+    bool unpack(QDataStream &stream);
+};
+
+class FileInfo : public ChatMessageBody
+{
+public:
+    FileInfo();
+    FileInfo(QDataStream &stream);
+    QString path;
+    QString fileName;
+    qint64 fileSize;
     bool pack(QDataStream &stream) const;
     bool unpack(QDataStream &stream);
 };

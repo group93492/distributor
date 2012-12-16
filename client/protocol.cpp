@@ -252,3 +252,57 @@ bool FolderContentsAnswer::unpack(QDataStream &stream)
         files.append(QString(filesList.value(i)));
     return true;
 }
+
+TransferInfo::TransferInfo()
+{
+    messageType = mtTransferInfo;
+}
+
+TransferInfo::TransferInfo(QDataStream &stream)
+{
+    messageType = mtTransferInfo;
+    unpack(stream);
+}
+
+bool TransferInfo::pack(QDataStream &stream) const
+{
+    if(stream.status() != QDataStream::Ok)
+        return false;
+    stream  << filesNumber << filesSize << key.toUtf8();
+    return true;
+}
+
+bool TransferInfo::unpack(QDataStream &stream)
+{
+    if(stream.status() != QDataStream::Ok)
+        return false;
+    QByteArray array;
+    stream >> filesNumber >> filesSize >> array;
+    key = array;
+    return true;
+}
+
+FileInfo::FileInfo()
+{
+    messageType = mtFileInfo;
+}
+
+bool FileInfo::pack(QDataStream &stream) const
+{
+    if(stream.status() != QDataStream::Ok)
+        return false;
+    stream << path.toUtf8()  << fileName.toUtf8() << fileSize;
+    return true;
+}
+
+bool FileInfo::unpack(QDataStream &stream)
+{
+    if(stream.status() != QDataStream::Ok)
+        return false;
+    QByteArray array1;
+    QByteArray array2;
+    stream >> array1 >> array2 >> fileSize;
+    path = array1;
+    fileName = array2;
+    return true;
+}
