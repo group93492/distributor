@@ -30,8 +30,8 @@ public:
     ChatMessageBody() {}
     virtual ~ChatMessageBody() {}
     quint8 messageType;
-    virtual bool pack(QDataStream &stream) const = 0;
-    virtual bool unpack(QDataStream &stream) = 0;
+    virtual bool pack(QDataStream &stream) const;
+    virtual bool unpack(QDataStream &stream);
 };
 
 class ChatMessageHeader
@@ -53,7 +53,6 @@ public:
     AuthorizationAnswer(QDataStream &stream);
     bool authorizationResult;
     QString denialReason;
-    bool pack(QDataStream &stream) const;
     bool unpack(QDataStream &stream);
 };
 
@@ -65,18 +64,15 @@ public:
     QString username;
     QString password;
     bool pack(QDataStream &stream) const;
-    bool unpack(QDataStream &stream);
 };
 
 class RegistrationRequest: public ChatMessageBody
 {
 public:
     RegistrationRequest();
-    RegistrationRequest(QDataStream &stream);
     QString username;
     QString password;
     bool pack(QDataStream &stream) const;
-    bool unpack(QDataStream &stream);
 };
 
 class RegistrationAnswer: public ChatMessageBody
@@ -86,7 +82,6 @@ public:
     RegistrationAnswer(QDataStream &stream);
     bool registrationResult;
     QString denialReason;
-    bool pack(QDataStream &stream) const;
     bool unpack(QDataStream &stream);
 };
 
@@ -95,7 +90,6 @@ class StartInfoRequest: public ChatMessageBody
 public:
     StartInfoRequest();
     bool pack(QDataStream &stream) const;
-    bool unpack(QDataStream &stream);
 };
 
 class StartInfoAnswer: public ChatMessageBody
@@ -106,7 +100,6 @@ public:
     QStringList folders;
     QStringList files;
     quint8 rights;
-    bool pack(QDataStream &stream) const;
     bool unpack(QDataStream &stream);
 };
 
@@ -114,10 +107,8 @@ class FolderContentsRequest: public ChatMessageBody
 {
 public:
     FolderContentsRequest();
-    FolderContentsRequest(QDataStream &stream);
     QString path;
     bool pack(QDataStream &stream) const;
-    bool unpack(QDataStream &stream);
 };
 
 class FolderContentsAnswer: public ChatMessageBody
@@ -127,7 +118,6 @@ public:
     FolderContentsAnswer(QDataStream &stream);
     QStringList folders;
     QStringList files;
-    bool pack(QDataStream &stream) const;
     bool unpack(QDataStream &stream);
 };
 
@@ -159,11 +149,9 @@ class ActionWithFileRequest: public ChatMessageBody
 {
 public:
     ActionWithFileRequest();
-    ActionWithFileRequest(QDataStream &stream);
     quint8 actionType;
     QString fileName;
     bool pack(QDataStream &stream) const;
-    bool unpack(QDataStream &stream);
 };
 
 class ActionWithFileAnswer : public ChatMessageBody
@@ -172,7 +160,6 @@ public:
     ActionWithFileAnswer();
     ActionWithFileAnswer(QDataStream &stream);
     QString key;
-    bool pack(QDataStream &stream) const;
     bool unpack(QDataStream &stream);
 };
 
