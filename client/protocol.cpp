@@ -282,7 +282,7 @@ bool ActionWithFileAnswer::unpack(QDataStream &stream)
     if(stream.status() != QDataStream::Ok)
         return false;
     QByteArray array;
-    stream >> array;
+    stream >> array >> answer;
     key = array;
     return true;
 }

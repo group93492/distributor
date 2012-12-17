@@ -160,6 +160,7 @@ public:
     ActionWithFileAnswer();
     ActionWithFileAnswer(QDataStream &stream);
     QString key;
+    bool answer;
     bool unpack(QDataStream &stream);
 };
 
