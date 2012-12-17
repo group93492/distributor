@@ -5,7 +5,7 @@
 #include <QStringList>
 #include <QtNetwork>
 
-class FilesSerializator : public QObject
+class FilesWriter : public QObject
 {
     Q_OBJECT
 public slots:

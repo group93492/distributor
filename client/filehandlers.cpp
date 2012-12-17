@@ -1,6 +1,6 @@
 #include "filehandlers.h"
 
-void FilesSerializator::writeFiles()
+void FilesWriter::writeFiles()
 {
     getGlobalInfo();
     QTcpSocket *socket = (QTcpSocket*)sender();
@@ -32,12 +32,12 @@ void FilesSerializator::writeFiles()
     emit finishGlobalTransfer();
 }
 
-void FilesSerializator::setFileNames(QStringList fileNames)
+void FilesWriter::setFileNames(QStringList fileNames)
 {
     m_listOfFiles = fileNames;
 }
 
-void FilesSerializator::getGlobalInfo()
+void FilesWriter::getGlobalInfo()
 {
     qint64 size = 0;
     QFile file;
@@ -49,7 +49,7 @@ void FilesSerializator::getGlobalInfo()
     emit transferInfo(m_listOfFiles.size(), size);
 }
 
-void FilesSerializator::checkTransferState()
+void FilesWriter::checkTransferState()
 {
     emit state(m_newSentSize - m_oldSentSize);
     m_oldSentSize = m_newSentSize;
