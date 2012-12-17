@@ -6,6 +6,8 @@ NetworkCfg::NetworkCfg(QWidget *parent) :
     ui(new Ui::NetworkCfg)
 {
     ui->setupUi(this);
+    move(QApplication::desktop()->geometry().width() / 2 - this->geometry().width() / 2,
+             QApplication::desktop()->geometry().height() / 2 - this->geometry().height() / 2);
     QIntValidator *validator = new QIntValidator(0, 65535);
     ui->mainPortEdit->setValidator(validator);
     ui->filesPortEdit->setValidator(validator);

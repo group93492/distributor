@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QIntValidator>
 #include <QSettings>
+#include <QDesktopWidget>
 
 namespace Ui {
 class NetworkCfg;
