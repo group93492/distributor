@@ -10,7 +10,7 @@
 #include <QDesktopWidget>
 #include <QTimer>
 #include "networkcfgdialog.h"
-#include "protocol.h"
+#include "Core/protocol.h"
 
 namespace Ui {
 class AuthDialog;

@@ -13,25 +13,25 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    authdialog.cpp \
-    protocol.cpp \
-    filemanager.cpp \
-    tcpclient.cpp \
-    filestransferdialog.cpp \
-    filehandlers.cpp \
-    networkcfgdialog.cpp
+        GUI/mainwindow.cpp \
+    GUI/authdialog.cpp \
+    Core/protocol.cpp \
+    GUI/filemanager.cpp \
+    Core/tcpclient.cpp \
+    GUI/filestransferdialog.cpp \
+    Core/filehandlers.cpp \
+    GUI/networkcfgdialog.cpp
 
-HEADERS  += mainwindow.h \
-    authdialog.h \
-    protocol.h \
-    filemanager.h \
-    tcpclient.h \
-    filestransferdialog.h \
-    filehandlers.h \
-    networkcfgdialog.h
+HEADERS  += GUI/mainwindow.h \
+    GUI/authdialog.h \
+    Core/protocol.h \
+    GUI/filemanager.h \
+    Core/tcpclient.h \
+    GUI/filestransferdialog.h \
+    Core/filehandlers.h \
+    GUI/networkcfgdialog.h
 
-FORMS    += mainwindow.ui \
-    authdialog.ui \
-    filestransferdialog.ui \
-    networkcfgdialog.ui
+FORMS    += GUI/mainwindow.ui \
+    GUI/authdialog.ui \
+    GUI/filestransferdialog.ui \
+    GUI/networkcfgdialog.ui

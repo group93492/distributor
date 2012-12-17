@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&m_fileManager, SIGNAL(pathChanged(QString)), &m_tcpClient, SLOT(requestFolderContents(QString)));
     connect(&m_tcpClient, SIGNAL(contents(QStringList,QStringList)), &m_fileManager, SLOT(addContents(QStringList,QStringList)));
     connect(&m_tcpClient, SIGNAL(rights(quint8)), this, SLOT(setRights(quint8)));
+    //connect(ui->mainToolBar->actions()[0], SIGNAL(triggered()),
     connect(ui->mainToolBar->actions()[6], SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 //    QStringList list1;
 //    list1 << "Folder1" << "Folder2" << "Folder3";
@@ -31,6 +32,16 @@ void MainWindow::startClient(QTcpSocket *socket, QString nick)
     ui->serverLabel->setText("Server: " + socket->peerAddress().toString() + QString::number(socket->peerPort()));
     m_tcpClient.start(socket, nick);
     show();
+}
+
+void MainWindow::fileActionHandler(QString fileName, quint8 type)
+{
+    m_tcpClient.requestActionWithFiles(fileName, type);
+}
+
+void MainWindow::onDownloadButtonClicked()
+{
+    //m_fileManager.selectedItems()
 }
 
 void MainWindow::setRights(quint8 rights)

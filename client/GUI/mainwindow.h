@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QtNetwork/QTcpSocket>
 #include <QHostAddress>
-#include "tcpclient.h"
+#include "Core/tcpclient.h"
 #include "filemanager.h"
 
 namespace Ui {
@@ -21,6 +21,8 @@ public:
 
 public slots:
     void startClient(QTcpSocket *socket, QString nick);
+    void fileActionHandler(QString fileName, quint8 type);
+    void onDownloadButtonClicked();
     
 private:
     Ui::MainWindow *ui;

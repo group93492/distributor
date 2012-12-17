@@ -16,6 +16,7 @@ public:
     void start(QTcpSocket *socket, QString nickname);
     void stop();
     void sendStartInfoRequest();
+    void requestActionWithFiles(QString fileName, quint8 actionType);
 
 public slots:
     void requestFolderContents(QString path);

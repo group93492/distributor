@@ -38,6 +38,15 @@ void TcpClient::requestFolderContents(QString path)
     delete msg;
 }
 
+void TcpClient::requestActionWithFiles(QString fileName, quint8 actionType)
+{
+    ActionWithFileRequest *msg = new ActionWithFileRequest;
+    msg->fileName = fileName;
+    msg->actionType = actionType;
+    sendMessageToServer(msg);
+    delete msg;
+}
+
 void TcpClient::clientGotNewMessage()
 {
     QTcpSocket *socket = (QTcpSocket*)sender();
