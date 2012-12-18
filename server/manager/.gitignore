@@ -13,11 +13,9 @@ test/version_tmp
 tmp
 log/*
 *~
+db/*.sqlite3
 
 # YARD artifacts
 .yardoc
 _yardoc
 doc/
-
-# test db
-db/test*
