@@ -7,6 +7,13 @@
 #include <QMessageBox>
 #include "protocol.h"
 
+struct buffer
+{
+    QStringList folders;
+    QStringList files;
+    quint8 actionType;
+};
+
 class TcpClient : public QObject
 {
     Q_OBJECT
@@ -17,6 +24,7 @@ public:
     void stop();
     void sendStartInfoRequest();
     void requestActionWithFiles(QString fileName, quint8 actionType);
+	void setBufferData(QStringList folders, QStringList files, quint8 type);
 
 public slots:
     void requestFolderContents(QString path);
@@ -24,10 +32,11 @@ public slots:
 private:
     QTcpSocket *m_tcpSocket;
     quint16 m_nextBlockSize;
+    QString m_nickname;
+    buffer m_buffer;
     void sendMessageToServer(MessageBody *msgBody) const;
     void processMessage(StartInfoAnswer *msg);
     void processMessage(FolderContentsAnswer *msg);
-    QString m_nickname;
 
 private slots:
     void clientGotNewMessage();

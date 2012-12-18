@@ -21,7 +21,6 @@ public:
 
 public slots:
     void startClient(QTcpSocket *socket, QString nick);
-    void fileActionHandler(QString fileName, quint8 type);
     void onDownloadButtonClicked();
     
 private:

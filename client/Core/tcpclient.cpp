@@ -47,6 +47,13 @@ void TcpClient::requestActionWithFiles(QString fileName, quint8 actionType)
     delete msg;
 }
 
+void TcpClient::setBufferData(QStringList folders, QStringList files, quint8 type)
+{
+    m_buffer.folders = folders;
+    m_buffer.files = files;
+    m_buffer.actionType = int(type);
+}
+
 void TcpClient::clientGotNewMessage()
 {
     QTcpSocket *socket = (QTcpSocket*)sender();
