@@ -68,8 +68,12 @@ class Packet < OpenStruct
   end
 
   def read_body!(socket)
-    @@protocol['packet'][self.type].each_pair do |key, val|
-      self.send("#{key}=", socket.read_by_type(val))
+    if self.type == 'unknown'
+      puts "received #{self.size - 1} wasted bytes: #{socket.read(self.size - 1)}"
+    else
+      @@protocol['packet'][self.type].each_pair do |key, val|
+        self.send("#{key}=", socket.read_by_type(val))
+      end
     end
   end
 
