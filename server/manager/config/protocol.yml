@@ -45,13 +45,13 @@ packet:
     folders: strings
     files:   strings
   transfer_info:
-    files_size:   int64
+    files_size:   uint64
     files_number: uint32
     key:          string
   file_info:
     path:      string
     file_name: string
-    file_size: int64
+    file_size: uint64
   action_with_file_request:
     action_type: uint8
     file_name:   string
