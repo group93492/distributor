@@ -137,8 +137,8 @@ void AuthDialog::gotMessage()
         }
         if(socket->bytesAvailable() < m_nextBlockSize)
             break;
-        //message in in <input>, unpack it
-        MessageHeader *header = new MessageHeader(input);
+        // message in in <input>, unpack it
+        ChatMessageHeader *header = new ChatMessageHeader(input);
         MessageType msgType = (MessageType) header->messageType;
         delete header;
         switch (msgType)
