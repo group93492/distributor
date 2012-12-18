@@ -25,6 +25,13 @@ enum MessageType
     /*etc*/
 };
 
+enum ActionType
+{
+    atDownload,
+    atUpload,
+    atDelete
+};
+
 class MessageBody
 {
 public:

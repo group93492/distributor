@@ -39,8 +39,8 @@ void MainWindow::onDownloadButtonClicked()
     if(m_fileManager.selectedItems().isEmpty())
         return;
     QString randomString = m_fileManager.selectedItems().value(qrand() % m_fileManager.selectedItems().size())->text();
-    m_tcpClient.setBufferData(m_fileManager.selectedFolders(), m_fileManager.selectedFiles(), 0);
-    m_tcpClient.requestActionWithFiles(randomString, 0);
+    m_tcpClient.setBufferData(m_fileManager.selectedFolders(), m_fileManager.selectedFiles(), atDownload);
+    m_tcpClient.requestActionWithFiles(randomString, atDownload);
 }
 
 void MainWindow::setRights(quint8 rights)

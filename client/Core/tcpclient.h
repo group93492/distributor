@@ -11,7 +11,7 @@ struct buffer
 {
     QStringList folders;
     QStringList files;
-    quint8 actionType;
+    ActionType type;
 };
 
 class TcpClient : public QObject
@@ -23,8 +23,8 @@ public:
     void start(QTcpSocket *socket, QString nickname);
     void stop();
     void sendStartInfoRequest();
-    void requestActionWithFiles(QString fileName, quint8 actionType);
-	void setBufferData(QStringList folders, QStringList files, quint8 type);
+    void requestActionWithFiles(QString fileName, ActionType type);
+    void setBufferData(QStringList folders, QStringList files, ActionType type);
 
 public slots:
     void requestFolderContents(QString path);

@@ -38,20 +38,20 @@ void TcpClient::requestFolderContents(QString path)
     delete msg;
 }
 
-void TcpClient::requestActionWithFiles(QString fileName, quint8 actionType)
+void TcpClient::requestActionWithFiles(QString fileName, ActionType type)
 {
     ActionWithFileRequest *msg = new ActionWithFileRequest;
     msg->fileName = fileName;
-    msg->actionType = actionType;
+    msg->actionType = int(type);
     sendMessageToServer(msg);
     delete msg;
 }
 
-void TcpClient::setBufferData(QStringList folders, QStringList files, quint8 type)
+void TcpClient::setBufferData(QStringList folders, QStringList files, ActionType type)
 {
     m_buffer.folders = folders;
     m_buffer.files = files;
-    m_buffer.actionType = int(type);
+    m_buffer.type = type;
 }
 
 void TcpClient::clientGotNewMessage()
