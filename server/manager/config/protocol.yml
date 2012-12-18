@@ -1,9 +1,18 @@
 packet_type:
-  0: unknown
-  1: authorization_request
-  2: authorization_answer
-  3: registration_request
-  4: registration_answer
+  0:  unknown
+  1:  authorization_request
+  2:  authorization_answer
+  3:  registration_request
+  4:  registration_answer
+  5:  start_info_request
+  6:  start_info_answer
+  7:  folder_content_request
+  8:  folder_content_answer
+  9:  transfer_info
+  10: file_info
+  11: action_with_file_request
+  12: action_with_file_answer
+  13: create_folder_message
 
 packet_head:
   size: uint16
@@ -17,10 +26,38 @@ packet:
     password: string
   authorization_answer:
     authorization_result: bool
-    denial_reason: string
+    denial_reason:        string
   registration_request:
     username: string
     password: string
   registration_answer:
     registration_result: bool
-    denial_reason: string
+    denial_reason:       string
+  start_info_request:
+    ~
+  start_info_answer:
+    folders: strings
+    files:   strings
+    rights:  uint8
+  folder_content_request:
+    path:    string
+  folder_content_answer:
+    folders: strings
+    files:   strings
+  transfer_info:
+    files_size:   int64
+    files_number: uint32
+    key:          string
+  file_info:
+    path:      string
+    file_name: string
+    file_size: int64
+  action_with_file_request:
+    action_type: uint8
+    file_name:   string
+  action_with_file_answer:
+    key:    string
+    answer: bool
+  create_folder_message:
+    path:        string
+    folder_name: string
