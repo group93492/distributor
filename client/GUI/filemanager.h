@@ -27,6 +27,8 @@ class FileManager : public QListWidget
     Q_OBJECT
 public:
     explicit FileManager(QWidget *parent = 0);
+    QStringList selectedFolders();
+    QStringList selectedFiles();
 
 private:
     QFileIconProvider m_iconProvider;

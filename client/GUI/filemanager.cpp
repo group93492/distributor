@@ -26,6 +26,34 @@ FileManager::FileManager(QWidget *parent) :
 
 }
 
+QStringList FileManager::selectedFolders()
+{
+    QStringList returnList;
+    QList<QListWidgetItem*> listOfSelectedItems = selectedItems();
+    FileManagerItem *item;
+    for(int i = 0; i < listOfSelectedItems.size(); i++)
+    {
+        item = static_cast<FileManagerItem*>(listOfSelectedItems.value(i));
+        if(item->contentType() == ctFolder)
+            returnList.append(item->text());
+    }
+    return returnList;
+}
+
+QStringList FileManager::selectedFiles()
+{
+    QStringList returnList;
+    QList<QListWidgetItem*> listOfSelectedItems = selectedItems();
+    FileManagerItem *item;
+    for(int i = 0; i < listOfSelectedItems.size(); i++)
+    {
+        item = static_cast<FileManagerItem*>(listOfSelectedItems.value(i));
+        if(item->contentType() == ctFile)
+            returnList.append(item->text());
+    }
+    return returnList;
+}
+
 void FileManager::clickHandler(QListWidgetItem *item)
 {
     FileManagerItem *fmItem = dynamic_cast<FileManagerItem*>(item);
