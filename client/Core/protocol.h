@@ -134,7 +134,7 @@ class TransferInfo: public MessageBody
 public:
     TransferInfo();
     TransferInfo(QDataStream &stream);
-    qint64 filesSize;
+    quint64 filesSize;
     quint32 filesNumber;
     QString key;
     bool pack(QDataStream &stream) const;
@@ -148,7 +148,7 @@ public:
     FileInfo(QDataStream &stream);
     QString path;
     QString fileName;
-    qint64 fileSize;
+    quint64 fileSize;
     bool pack(QDataStream &stream) const;
     bool unpack(QDataStream &stream);
 };
