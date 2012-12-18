@@ -4,32 +4,32 @@
 //we hadn't any chance to notice about it through constructor
 //what about exception throwing?
 
-bool ChatMessageBody::pack(QDataStream &stream) const
+bool MessageBody::pack(QDataStream &stream) const
 {
     if(stream.status() != QDataStream::Ok)
         return false;
     return true;
 }
 
-bool ChatMessageBody::unpack(QDataStream &stream)
+bool MessageBody::unpack(QDataStream &stream)
 {
     if(stream.status() != QDataStream::Ok)
         return false;
     return true;
 }
 
-ChatMessageHeader::ChatMessageHeader(const ChatMessageBody *msgBody)
+MessageHeader::MessageHeader(const MessageBody *msgBody)
 {
     messageType = msgBody->messageType;
     messageSize = sizeof(*msgBody);
 }
 
-ChatMessageHeader::ChatMessageHeader(QDataStream &stream)
+MessageHeader::MessageHeader(QDataStream &stream)
 {
     unpack(stream);
 }
 
-bool ChatMessageHeader::pack(QDataStream &stream) const
+bool MessageHeader::pack(QDataStream &stream) const
 {
     if (stream.status() != QDataStream::Ok)
         return false;
@@ -37,7 +37,7 @@ bool ChatMessageHeader::pack(QDataStream &stream) const
     return true;
 }
 
-bool ChatMessageHeader::unpack(QDataStream &stream)
+bool MessageHeader::unpack(QDataStream &stream)
 {
     if (stream.status() != QDataStream::Ok)
         return false;
@@ -284,5 +284,36 @@ bool ActionWithFileAnswer::unpack(QDataStream &stream)
     QByteArray array;
     stream >> array >> answer;
     key = array;
+    return true;
+}
+
+CreateFolderMessage::CreateFolderMessage()
+{
+    messageType = mtCreateFolderMessage;
+}
+
+CreateFolderMessage::CreateFolderMessage(QDataStream &stream)
+{
+    messageType = mtCreateFolderMessage;
+    unpack(stream);
+}
+
+bool CreateFolderMessage::pack(QDataStream &stream) const
+{
+    if(stream.status() != QDataStream::Ok)
+        return false;
+    stream << path.toUtf8() << folderName.toUtf8();
+    return true;
+}
+
+bool CreateFolderMessage::unpack(QDataStream &stream)
+{
+    if(stream.status() != QDataStream::Ok)
+        return false;
+    QByteArray array1;
+    QByteArray array2;
+    stream >> array1 >> array2;
+    path = array1;
+    folderName = array2;
     return true;
 }

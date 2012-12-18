@@ -36,7 +36,7 @@ private:
     QSettings *m_session;
     NetworkCfg m_configDialog;
     QTimer m_timer;
-    void sendMessageToServer(ChatMessageBody *body);
+    void sendMessageToServer(MessageBody *body);
     void processMessage(RegistrationAnswer *msg);
     void processMessage(AuthorizationAnswer *msg);
     bool checkInputFields();

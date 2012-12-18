@@ -24,7 +24,7 @@ public slots:
 private:
     QTcpSocket *m_tcpSocket;
     quint16 m_nextBlockSize;
-    void sendMessageToServer(ChatMessageBody *msgBody) const;
+    void sendMessageToServer(MessageBody *msgBody) const;
     void processMessage(StartInfoAnswer *msg);
     void processMessage(FolderContentsAnswer *msg);
     QString m_nickname;

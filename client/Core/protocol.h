@@ -20,33 +20,34 @@ enum MessageType
     mtTransferInfo,
     mtFileInfo,
     mtActionWithFileRequest,
-    mtActionWithFileAnswer
+    mtActionWithFileAnswer,
+    mtCreateFolderMessage
     /*etc*/
 };
 
-class ChatMessageBody
+class MessageBody
 {
 public:
-    ChatMessageBody() {}
-    virtual ~ChatMessageBody() {}
+    MessageBody() {}
+    virtual ~MessageBody() {}
     quint8 messageType;
     virtual bool pack(QDataStream &stream) const;
     virtual bool unpack(QDataStream &stream);
 };
 
-class ChatMessageHeader
+class MessageHeader
 {
 public:
-    ChatMessageHeader() {}
-    ChatMessageHeader(const ChatMessageBody *msgBody);
-    ChatMessageHeader(QDataStream &stream);
+    MessageHeader() {}
+    MessageHeader(const MessageBody *msgBody);
+    MessageHeader(QDataStream &stream);
     quint8 messageType;
     quint32 messageSize;
     bool pack(QDataStream &stream) const;
     bool unpack(QDataStream &stream);
 };
 
-class AuthorizationAnswer: public ChatMessageBody
+class AuthorizationAnswer: public MessageBody
 {
 public:
     AuthorizationAnswer();
@@ -56,7 +57,7 @@ public:
     bool unpack(QDataStream &stream);
 };
 
-class AuthorizationRequest: public ChatMessageBody
+class AuthorizationRequest: public MessageBody
 {
 public:
     AuthorizationRequest();
@@ -66,7 +67,7 @@ public:
     bool pack(QDataStream &stream) const;
 };
 
-class RegistrationRequest: public ChatMessageBody
+class RegistrationRequest: public MessageBody
 {
 public:
     RegistrationRequest();
@@ -75,7 +76,7 @@ public:
     bool pack(QDataStream &stream) const;
 };
 
-class RegistrationAnswer: public ChatMessageBody
+class RegistrationAnswer: public MessageBody
 {
 public:
     RegistrationAnswer();
@@ -85,14 +86,14 @@ public:
     bool unpack(QDataStream &stream);
 };
 
-class StartInfoRequest: public ChatMessageBody
+class StartInfoRequest: public MessageBody
 {
 public:
     StartInfoRequest();
     bool pack(QDataStream &stream) const;
 };
 
-class StartInfoAnswer: public ChatMessageBody
+class StartInfoAnswer: public MessageBody
 {
 public:
     StartInfoAnswer();
@@ -103,7 +104,7 @@ public:
     bool unpack(QDataStream &stream);
 };
 
-class FolderContentsRequest: public ChatMessageBody
+class FolderContentsRequest: public MessageBody
 {
 public:
     FolderContentsRequest();
@@ -111,7 +112,7 @@ public:
     bool pack(QDataStream &stream) const;
 };
 
-class FolderContentsAnswer: public ChatMessageBody
+class FolderContentsAnswer: public MessageBody
 {
 public:
     FolderContentsAnswer();
@@ -121,7 +122,7 @@ public:
     bool unpack(QDataStream &stream);
 };
 
-class TransferInfo: public ChatMessageBody
+class TransferInfo: public MessageBody
 {
 public:
     TransferInfo();
@@ -133,7 +134,7 @@ public:
     bool unpack(QDataStream &stream);
 };
 
-class FileInfo: public ChatMessageBody
+class FileInfo: public MessageBody
 {
 public:
     FileInfo();
@@ -145,7 +146,7 @@ public:
     bool unpack(QDataStream &stream);
 };
 
-class ActionWithFileRequest: public ChatMessageBody
+class ActionWithFileRequest: public MessageBody
 {
 public:
     ActionWithFileRequest();
@@ -154,13 +155,24 @@ public:
     bool pack(QDataStream &stream) const;
 };
 
-class ActionWithFileAnswer : public ChatMessageBody
+class ActionWithFileAnswer: public MessageBody
 {
 public:
     ActionWithFileAnswer();
     ActionWithFileAnswer(QDataStream &stream);
     QString key;
     bool answer;
+    bool unpack(QDataStream &stream);
+};
+
+class CreateFolderMessage: public MessageBody
+{
+public:
+    CreateFolderMessage();
+    CreateFolderMessage(QDataStream &stream);
+    QString path;
+    QString folderName;
+    bool pack(QDataStream &stream) const;
     bool unpack(QDataStream &stream);
 };
 

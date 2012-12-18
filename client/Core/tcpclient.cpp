@@ -63,7 +63,7 @@ void TcpClient::clientGotNewMessage()
         if(socket->bytesAvailable() < m_nextBlockSize)
             break;
         //message in in <input>, unpack it
-        ChatMessageHeader *header = new ChatMessageHeader(input);
+        MessageHeader *header = new MessageHeader(input);
         MessageType msgType = (MessageType) header->messageType;
         delete header;
         switch (msgType)
@@ -97,13 +97,13 @@ void TcpClient::socketError(QAbstractSocket::SocketError)
     QMessageBox::warning(0, "Error!", m_tcpSocket->errorString(), QMessageBox::Ok);
 }
 
-void TcpClient::sendMessageToServer(ChatMessageBody *msgBody) const
+void TcpClient::sendMessageToServer(MessageBody *msgBody) const
 {
     QByteArray arrBlock;
     QDataStream output(&arrBlock, QIODevice::WriteOnly);
     output.setVersion(QDataStream::Qt_4_7);
     output << quint16(0);
-    ChatMessageHeader *header = new ChatMessageHeader(msgBody);
+    MessageHeader *header = new MessageHeader(msgBody);
     header->pack(output);
     msgBody->pack(output);
     delete header;

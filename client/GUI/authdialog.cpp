@@ -27,13 +27,13 @@ AuthDialog::~AuthDialog()
     delete ui;
 }
 
-void AuthDialog::sendMessageToServer(ChatMessageBody *body)
+void AuthDialog::sendMessageToServer(MessageBody *body)
 {
     QByteArray arrBlock;
     QDataStream output(&arrBlock, QIODevice::WriteOnly);
     output.setVersion(QDataStream::Qt_4_7);
     output << quint16(0);
-    ChatMessageHeader *header = new ChatMessageHeader(body);
+    MessageHeader *header = new MessageHeader(body);
     header->pack(output);
     body->pack(output);
     delete header;
@@ -138,7 +138,7 @@ void AuthDialog::gotMessage()
         if(socket->bytesAvailable() < m_nextBlockSize)
             break;
         //message in in <input>, unpack it
-        ChatMessageHeader *header = new ChatMessageHeader(input);
+        MessageHeader *header = new MessageHeader(input);
         MessageType msgType = (MessageType) header->messageType;
         delete header;
         switch (msgType)
