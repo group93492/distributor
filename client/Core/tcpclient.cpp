@@ -32,7 +32,7 @@ void TcpClient::sendStartInfoRequest()
 void TcpClient::requestFolderContents(QString path)
 {
     qDebug() << "Request folder contents:" << path;
-    FolderContentsRequest *msg = new FolderContentsRequest;
+    FolderContentRequest *msg = new FolderContentRequest;
     msg->path = path;
     sendMessageToServer(msg);
     delete msg;
@@ -84,7 +84,7 @@ void TcpClient::clientGotNewMessage()
         }
         case mtFolderContentsAnswer:
         {
-            FolderContentsAnswer *msg = new FolderContentsAnswer(input);
+            FolderContentAnswer *msg = new FolderContentAnswer(input);
             processMessage(msg);
             delete msg;
             break;
@@ -125,7 +125,7 @@ void TcpClient::processMessage(StartInfoAnswer *msg)
     emit rights(msg->rights);
 }
 
-void TcpClient::processMessage(FolderContentsAnswer *msg)
+void TcpClient::processMessage(FolderContentAnswer *msg)
 {
     emit contents(msg->folders, msg->files);
 }

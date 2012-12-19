@@ -21,7 +21,8 @@ enum MessageType
     mtFileInfo,
     mtActionWithFileRequest,
     mtActionWithFileAnswer,
-    mtCreateFolderMessage
+    mtCreateFolderMessage,
+    mtTransferRejected
     /*etc*/
 };
 
@@ -97,7 +98,6 @@ class StartInfoRequest: public MessageBody
 {
 public:
     StartInfoRequest();
-    bool pack(QDataStream &stream) const;
 };
 
 class StartInfoAnswer: public MessageBody
@@ -111,19 +111,19 @@ public:
     bool unpack(QDataStream &stream);
 };
 
-class FolderContentsRequest: public MessageBody
+class FolderContentRequest: public MessageBody
 {
 public:
-    FolderContentsRequest();
+    FolderContentRequest();
     QString path;
     bool pack(QDataStream &stream) const;
 };
 
-class FolderContentsAnswer: public MessageBody
+class FolderContentAnswer: public MessageBody
 {
 public:
-    FolderContentsAnswer();
-    FolderContentsAnswer(QDataStream &stream);
+    FolderContentAnswer();
+    FolderContentAnswer(QDataStream &stream);
     QStringList folders;
     QStringList files;
     bool unpack(QDataStream &stream);
@@ -179,6 +179,16 @@ public:
     CreateFolderMessage(QDataStream &stream);
     QString path;
     QString folderName;
+    bool pack(QDataStream &stream) const;
+    bool unpack(QDataStream &stream);
+};
+
+class TransferRejected: public MessageBody
+{
+public:
+    TransferRejected();
+    TransferRejected(QDataStream &stream);
+    QString message;
     bool pack(QDataStream &stream) const;
     bool unpack(QDataStream &stream);
 };

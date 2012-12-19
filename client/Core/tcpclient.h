@@ -36,7 +36,7 @@ private:
     buffer m_buffer;
     void sendMessageToServer(MessageBody *msgBody) const;
     void processMessage(StartInfoAnswer *msg);
-    void processMessage(FolderContentsAnswer *msg);
+    void processMessage(FolderContentAnswer *msg);
 
 private slots:
     void clientGotNewMessage();

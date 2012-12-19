@@ -127,13 +127,6 @@ StartInfoRequest::StartInfoRequest()
     messageType = mtStartInfoRequest;
 }
 
-bool StartInfoRequest::pack(QDataStream &stream) const
-{
-    if(stream.status() != QDataStream::Ok)
-        return false;
-    return true;
-}
-
 StartInfoAnswer::StartInfoAnswer()
 {
     messageType = mtStartInfoAnswer;
@@ -160,12 +153,12 @@ bool StartInfoAnswer::unpack(QDataStream &stream)
 }
 
 
-FolderContentsRequest::FolderContentsRequest()
+FolderContentRequest::FolderContentRequest()
 {
     messageType = mtFolderContentsRequest;
 }
 
-bool FolderContentsRequest::pack(QDataStream &stream) const
+bool FolderContentRequest::pack(QDataStream &stream) const
 {
     if(stream.status() != QDataStream::Ok)
         return false;
@@ -173,18 +166,18 @@ bool FolderContentsRequest::pack(QDataStream &stream) const
     return true;
 }
 
-FolderContentsAnswer::FolderContentsAnswer()
+FolderContentAnswer::FolderContentAnswer()
 {
     messageType = mtFolderContentsAnswer;
 }
 
-FolderContentsAnswer::FolderContentsAnswer(QDataStream &stream)
+FolderContentAnswer::FolderContentAnswer(QDataStream &stream)
 {
     messageType = mtFolderContentsAnswer;
     unpack(stream);
 }
 
-bool FolderContentsAnswer::unpack(QDataStream &stream)
+bool FolderContentAnswer::unpack(QDataStream &stream)
 {
     if(stream.status() != QDataStream::Ok)
         return false;
@@ -315,5 +308,34 @@ bool CreateFolderMessage::unpack(QDataStream &stream)
     stream >> array1 >> array2;
     path = array1;
     folderName = array2;
+    return true;
+}
+
+TransferRejected::TransferRejected()
+{
+    messageType = mtTransferRejected;
+}
+
+TransferRejected::TransferRejected(QDataStream &stream)
+{
+    messageType = mtTransferRejected;
+    unpack(stream);
+}
+
+bool TransferRejected::pack(QDataStream &stream) const
+{
+    if(stream.status() != QDataStream::Ok)
+        return false;
+    stream << message.toUtf8();
+    return true;
+}
+
+bool TransferRejected::unpack(QDataStream &stream)
+{
+    if(stream.status() != QDataStream::Ok)
+        return false;
+    QByteArray array;
+    stream >> array;
+    message = array;
     return true;
 }
