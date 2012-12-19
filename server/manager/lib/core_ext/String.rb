@@ -33,5 +33,13 @@ class String
     self.method("write_#{type}").call(value)
   end
 
+  def write_strings(strings)
+    self.write_uint32(strings.size)
+    strings.size.times do |i|
+      self.write_string(strings[i])
+    end
+  end
+
   alias_method :write_string, :write_qbytearray
+  alias_method :write_qstringlist, :write_strings
 end

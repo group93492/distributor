@@ -57,6 +57,15 @@ class TCPSocket
     end
   end
 
+  def read_strings
+    msg = []
+    size = self.read_uint32
+    size.times do
+      msg << read_string
+    end
+    msg
+  end
+
   def write_uint8(value)
     self << [value].pack("C")
   end
@@ -86,6 +95,15 @@ class TCPSocket
     self << [bool.to_i].pack("C")
   end
 
+  def write_strings(strings)
+    self.write_uint32(strings.size)
+    strings.size.times do |i|
+      self.write_string(strings[i])
+    end
+  end
+
   alias_method :write_string, :write_qbytearray
   alias_method :read_string, :read_qbytearray
+  alias_method :read_qstringlist, :read_strings
+  alias_method :write_qstringlist, :write_strings
 end
