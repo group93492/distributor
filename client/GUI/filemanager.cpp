@@ -35,7 +35,7 @@ QStringList FileManager::selectedFolders()
     {
         item = static_cast<FileManagerItem*>(listOfSelectedItems.value(i));
         if(item->contentType() == ctFolder)
-            returnList.append(item->text());
+            returnList.append(m_currentPath + item->text());
     }
     return returnList;
 }
@@ -49,7 +49,7 @@ QStringList FileManager::selectedFiles()
     {
         item = static_cast<FileManagerItem*>(listOfSelectedItems.value(i));
         if(item->contentType() == ctFile)
-            returnList.append(item->text());
+            returnList.append(m_currentPath + item->text());
     }
     return returnList;
 }
