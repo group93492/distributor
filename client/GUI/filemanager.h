@@ -32,10 +32,12 @@ public:
 
 private:
     QFileIconProvider m_iconProvider;
-    QStringList m_currentPath;
+    QStringList m_currentPathList;
+    QString m_currentPathString;
 
 private slots:
     void clickHandler(QListWidgetItem *item);
+    void updateCurrentPathString();
     
 signals:
     void pathChanged(QString newPath);
