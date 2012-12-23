@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&m_tcpClient, SIGNAL(contents(QStringList,QStringList)), &m_fileManager, SLOT(addContents(QStringList,QStringList)));
     connect(&m_tcpClient, SIGNAL(rights(quint8)), this, SLOT(setRights(quint8)));
 	connect(ui->mainToolBar->actions()[0], SIGNAL(triggered()), this, SLOT(onDownloadButtonClicked()));
+    connect(ui->mainToolBar->actions()[1], SIGNAL(triggered()), this, SLOT(onUploadButtonClicked()));
     connect(ui->mainToolBar->actions()[6], SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 //    QStringList list1;
 //    list1 << "Folder1" << "Folder2" << "Folder3";
@@ -41,6 +42,11 @@ void MainWindow::onDownloadButtonClicked()
     QString randomString = m_fileManager.selectedItems().value(qrand() % m_fileManager.selectedItems().size())->text();
     m_tcpClient.setBufferData(m_fileManager.selectedFolders(), m_fileManager.selectedFiles(), atDownload);
     m_tcpClient.requestActionWithFiles(randomString, atDownload);
+}
+
+void MainWindow::onUploadButtonClicked()
+{
+    QFileDialog::getOpenFileNames(this, "Select files and folders for transfer");
 }
 
 void MainWindow::setRights(quint8 rights)

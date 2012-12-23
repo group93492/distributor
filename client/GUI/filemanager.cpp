@@ -21,7 +21,6 @@ FileManager::FileManager(QWidget *parent) :
     QListWidget(parent)
 {
     setViewMode(QListView::IconMode);
-    m_currentPath = "/";
     connect(this, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(clickHandler(QListWidgetItem*)));
 
 }
@@ -35,7 +34,7 @@ QStringList FileManager::selectedFolders()
     {
         item = static_cast<FileManagerItem*>(listOfSelectedItems.value(i));
         if(item->contentType() == ctFolder)
-            returnList.append(m_currentPath + item->text());
+            returnList.append("/" + m_currentPath.join("/") + item->text());
     }
     return returnList;
 }
@@ -49,7 +48,7 @@ QStringList FileManager::selectedFiles()
     {
         item = static_cast<FileManagerItem*>(listOfSelectedItems.value(i));
         if(item->contentType() == ctFile)
-            returnList.append(m_currentPath + item->text());
+            returnList.append("/" + m_currentPath.join("/") + item->text());
     }
     return returnList;
 }
@@ -59,23 +58,22 @@ void FileManager::clickHandler(QListWidgetItem *item)
     FileManagerItem *fmItem = dynamic_cast<FileManagerItem*>(item);
     if(fmItem->contentType() == ctFolder)
     {
-        m_currentPath = m_currentPath + fmItem->text() + "/";
-        emit pathChanged(m_currentPath);
+        m_currentPath.append(fmItem->text());
+        emit pathChanged("/" + m_currentPath.join("/"));
     }
     else if(fmItem->contentType() == ctBackFolder)
     {
-        m_currentPath = m_currentPath.left(m_currentPath.size() - 1);
-        m_currentPath = m_currentPath.left(m_currentPath.lastIndexOf("/") + 1);
-        emit pathChanged(m_currentPath);
+        m_currentPath.removeLast();
+        emit pathChanged("/" + m_currentPath.join("/"));
     }
     else
-        emit fileOpen(m_currentPath + fmItem->text());
+        emit fileOpen("/" + m_currentPath.join("/") + fmItem->text());
 }
 
 void FileManager::addContents(QStringList FolderNames, QStringList FileNames)
 {
     clear();
-    if(m_currentPath != "/")
+    if(!m_currentPath.isEmpty())
         addItem(new FileManagerItem(m_iconProvider.icon(QFileIconProvider::Folder), "..", ctBackFolder));
     for(int i = 0; i < FolderNames.size(); i++)
         addItem(new FileManagerItem(m_iconProvider.icon(QFileIconProvider::Folder), FolderNames.value(i), ctFolder));

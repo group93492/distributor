@@ -32,7 +32,7 @@ public:
 
 private:
     QFileIconProvider m_iconProvider;
-    QString m_currentPath;
+    QStringList m_currentPath;
 
 private slots:
     void clickHandler(QListWidgetItem *item);

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QtNetwork/QTcpSocket>
 #include <QHostAddress>
+#include <QFileDialog>
 #include "Core/tcpclient.h"
 #include "filemanager.h"
 
@@ -22,6 +23,7 @@ public:
 public slots:
     void startClient(QTcpSocket *socket, QString nick);
     void onDownloadButtonClicked();
+    void onUploadButtonClicked();
     
 private:
     Ui::MainWindow *ui;
