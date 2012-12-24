@@ -6,6 +6,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->actionDownload->setIcon(QIcon("icons/download.png"));
+    ui->actionUpload->setIcon(QIcon("icons/upload.png"));
+    ui->actionDelete->setIcon(QIcon("icons/delete.png"));
+    ui->actionAboutProgram->setIcon(QIcon("icons/info.png"));
+    ui->actionAboutQt->setIcon(QIcon("icons/qt-logo.png"));
+    //
     ui->filesLayout->addWidget(&m_fileManager);
     connect(&m_fileManager, SIGNAL(pathChanged(QString)), ui->pathLineEdit, SLOT(setText(QString)));
     connect(&m_fileManager, SIGNAL(pathChanged(QString)), &m_tcpClient, SLOT(requestFolderContents(QString)));
@@ -62,7 +68,7 @@ void MainWindow::on_actionDownload_triggered()
 
 void MainWindow::on_actionUpload_triggered()
 {
-    qDebug() << FileDialog::getFilesAndDirs();
+    //qDebug() << FileDialog::getFilesAndDirs();
 }
 
 void MainWindow::on_actionAboutQt_triggered()

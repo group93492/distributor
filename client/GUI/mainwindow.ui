@@ -91,7 +91,7 @@
   <action name="actionUpload">
    <property name="icon">
     <iconset>
-     <normaloff>icons/upload.png</normaloff>icons/upload.png</iconset>
+     <normaloff>../icons/upload.png</normaloff>../icons/upload.png</iconset>
    </property>
    <property name="text">
     <string>Upload</string>
@@ -99,11 +99,14 @@
    <property name="toolTip">
     <string>Upload your folders and files to server</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+U</string>
+   </property>
   </action>
   <action name="actionDownload">
    <property name="icon">
     <iconset>
-     <normaloff>icons/download.png</normaloff>icons/download.png</iconset>
+     <normaloff>../icons/download.png</normaloff>../icons/download.png</iconset>
    </property>
    <property name="text">
     <string>Download</string>
@@ -111,11 +114,14 @@
    <property name="toolTip">
     <string>Download selected folder and files</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
   </action>
   <action name="actionDelete">
    <property name="icon">
     <iconset>
-     <normaloff>icons/delete.png</normaloff>icons/delete.png</iconset>
+     <normaloff>../icons/delete.png</normaloff>../icons/delete.png</iconset>
    </property>
    <property name="text">
     <string>Delete</string>
@@ -123,11 +129,14 @@
    <property name="toolTip">
     <string>Delete selected files and folders</string>
    </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
   </action>
   <action name="actionAboutProgram">
    <property name="icon">
     <iconset>
-     <normaloff>icons/info.png</normaloff>icons/info.png</iconset>
+     <normaloff>../icons/info.png</normaloff>../icons/info.png</iconset>
    </property>
    <property name="text">
     <string>aboutProgram</string>
@@ -135,11 +144,14 @@
    <property name="toolTip">
     <string>About program</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
   </action>
   <action name="actionAboutQt">
    <property name="icon">
     <iconset>
-     <normaloff>icons/qt-logo.png</normaloff>icons/qt-logo.png</iconset>
+     <normaloff>../icons/qt-logo.png</normaloff>../icons/qt-logo.png</iconset>
    </property>
    <property name="text">
     <string>aboutQt</string>
