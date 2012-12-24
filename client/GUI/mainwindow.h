@@ -6,8 +6,8 @@
 #include <QHostAddress>
 #include <QFileDialog>
 #include "Core/tcpclient.h"
-#include "filemanager.h"
-#include "filedialog.h"
+#include "GUI/filemanager.h"
+#include "GUI/filedialog.h"
 
 namespace Ui {
 class MainWindow;

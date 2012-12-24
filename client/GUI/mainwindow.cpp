@@ -68,7 +68,8 @@ void MainWindow::on_actionDownload_triggered()
 
 void MainWindow::on_actionUpload_triggered()
 {
-    //qDebug() << FileDialog::getFilesAndDirs();
+    FileDialog *dialog = new FileDialog;
+    dialog->show();
 }
 
 void MainWindow::on_actionAboutQt_triggered()

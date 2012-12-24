@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     Core/tcpclient.cpp \
     GUI/filestransferdialog.cpp \
     Core/filehandlers.cpp \
-    GUI/networkcfgdialog.cpp
+    GUI/networkcfgdialog.cpp \
+    GUI/filedialog.cpp
 
 HEADERS  += GUI/mainwindow.h \
     GUI/authdialog.h \
@@ -29,9 +30,11 @@ HEADERS  += GUI/mainwindow.h \
     Core/tcpclient.h \
     GUI/filestransferdialog.h \
     Core/filehandlers.h \
-    GUI/networkcfgdialog.h
+    GUI/networkcfgdialog.h \
+    GUI/filedialog.h
 
 FORMS    += GUI/mainwindow.ui \
     GUI/authdialog.ui \
     GUI/filestransferdialog.ui \
-    GUI/networkcfgdialog.ui
+    GUI/networkcfgdialog.ui \
+    GUI/filedialog.ui
