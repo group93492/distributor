@@ -7,6 +7,7 @@
 #include <QFileDialog>
 #include "Core/tcpclient.h"
 #include "filemanager.h"
+#include "filedialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -22,8 +23,6 @@ public:
 
 public slots:
     void startClient(QTcpSocket *socket, QString nick);
-    void onDownloadButtonClicked();
-    void onUploadButtonClicked();
     
 private:
     Ui::MainWindow *ui;
@@ -32,6 +31,9 @@ private:
 
 private slots:
     void setRights(quint8 rights);
+    void on_actionDownload_triggered();
+    void on_actionUpload_triggered();
+    void on_actionAboutQt_triggered();
 };
 
 #endif // MAINWINDOW_H

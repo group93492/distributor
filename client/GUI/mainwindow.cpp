@@ -11,9 +11,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&m_fileManager, SIGNAL(pathChanged(QString)), &m_tcpClient, SLOT(requestFolderContents(QString)));
     connect(&m_tcpClient, SIGNAL(contents(QStringList,QStringList)), &m_fileManager, SLOT(addContents(QStringList,QStringList)));
     connect(&m_tcpClient, SIGNAL(rights(quint8)), this, SLOT(setRights(quint8)));
-	connect(ui->mainToolBar->actions()[0], SIGNAL(triggered()), this, SLOT(onDownloadButtonClicked()));
-    connect(ui->mainToolBar->actions()[1], SIGNAL(triggered()), this, SLOT(onUploadButtonClicked()));
-    connect(ui->mainToolBar->actions()[6], SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 //    QStringList list1;
 //    list1 << "Folder1" << "Folder2" << "Folder3";
 //    QStringList list2;
@@ -35,7 +32,26 @@ void MainWindow::startClient(QTcpSocket *socket, QString nick)
     show();
 }
 
-void MainWindow::onDownloadButtonClicked()
+void MainWindow::setRights(quint8 rights)
+{
+    QString str;
+    if(rights / 128)
+        str += "/Download/";
+    else
+        ui->actionDownload->setEnabled(false);
+    if(rights / 64)
+        str += "/Upload/";
+    else
+        ui->actionUpload->setEnabled(false);
+    if(rights / 32)
+        str += "/Delete/";
+    else
+        ui->actionDelete->setEnabled(false);
+    ui->rigthsLabel->setText("Your rights:" + str);
+
+}
+
+void MainWindow::on_actionDownload_triggered()
 {
     if(m_fileManager.selectedItems().isEmpty())
         return;
@@ -44,26 +60,12 @@ void MainWindow::onDownloadButtonClicked()
     m_tcpClient.requestActionWithFiles(randomString, atDownload);
 }
 
-void MainWindow::onUploadButtonClicked()
+void MainWindow::on_actionUpload_triggered()
 {
-    QFileDialog::getOpenFileNames(this, "Select files and folders for transfer");
+    qDebug() << FileDialog::getFilesAndDirs();
 }
 
-void MainWindow::setRights(quint8 rights)
+void MainWindow::on_actionAboutQt_triggered()
 {
-    QString str;
-    if(rights / 128)
-        str += "/Download/";
-    else
-        ui->mainToolBar->actions()[0]->setEnabled(false);
-    if(rights / 64)
-        str += "/Upload/";
-    else
-        ui->mainToolBar->actions()[1]->setEnabled(false);
-    if(rights / 32)
-        str += "/Delete/";
-    else
-        ui->mainToolBar->actions()[3]->setEnabled(false);
-    ui->rigthsLabel->setText("Your rights:" + str);
-
+    QApplication::aboutQt();
 }
