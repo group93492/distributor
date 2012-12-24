@@ -34,7 +34,56 @@ void FileDialog::on_treeView_clicked(const QModelIndex &index)
 void FileDialog::on_listView_doubleClicked(const QModelIndex &index)
 {
     if(m_listModel.fileInfo(index).isDir())
-    {
         ui->listView->setRootIndex(m_listModel.setRootPath(m_listModel.fileInfo(index).absoluteFilePath()));
+    ui->listView->selectionModel()->clearSelection();
+}
+
+QStringList FileDialog::getFolderListRecursive(QString path)
+{
+    QDir dir(path);
+    QStringList returnList;
+    QFileInfoList list = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
+    for(int i = 0; i < list.size(); i++)
+        if(list.value(i).isDir())
+        {
+            returnList.append(list.value(i).absoluteFilePath());
+            returnList.append(getFolderListRecursive(list.value(i).absoluteFilePath()));
+        }
+    return returnList;
+}
+
+void FileDialog::accept()
+{
+    m_selectedItems = ui->listView->selectionModel()->selectedIndexes();
+    QDialog::accept();
+}
+
+QStringList FileDialog::selectedFolders()
+{
+    QStringList stringList;
+    for(int i = 0; i < m_selectedItems.size(); i++)
+        if(m_listModel.fileInfo(m_selectedItems.value(i)).isDir())
+        {
+            stringList.append(m_listModel.fileInfo(m_selectedItems.value(i)).absoluteFilePath());
+            stringList.append(getFolderListRecursive(m_listModel.fileInfo(m_selectedItems.value(i)).absoluteFilePath()));
+        }
+    return stringList;
+}
+
+QStringList FileDialog::selectedFiles(QStringList folders)
+{
+    QStringList files;
+    QFileInfoList fileInfoList;
+    QDir dir;
+    for(int i = 0; i < folders.size(); i++)
+    {
+        dir.setPath(folders.value(i));
+        fileInfoList = dir.entryInfoList(QDir::Files);
+        for(int i = 0; i < fileInfoList.size(); i++)
+            files.append(fileInfoList.value(i).absoluteFilePath());
     }
+    for(int i = 0; i < m_selectedItems.size(); i++)
+        if(m_listModel.fileInfo(m_selectedItems.value(i)).isFile())
+            files.append(m_listModel.fileInfo(m_selectedItems.value(i)).absoluteFilePath());
+    return files;
 }

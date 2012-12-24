@@ -68,8 +68,15 @@ void MainWindow::on_actionDownload_triggered()
 
 void MainWindow::on_actionUpload_triggered()
 {
-    FileDialog *dialog = new FileDialog;
-    dialog->show();
+    FileDialog dialog;
+    dialog.exec();
+    qDebug() << dialog.selectedFiles(dialog.selectedFolders()).size();
+    qDebug() << "";
+    qDebug() << "";
+    qDebug() << "";
+    qDebug() << "";
+    qDebug() << "";
+    qDebug() << dialog.selectedFolders().size();
 }
 
 void MainWindow::on_actionAboutQt_triggered()
