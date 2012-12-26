@@ -1,24 +1,25 @@
 #include "protocol.h"
 
-//bad news that we will fault if stream.status is not ok because
-//we hadn't any chance to notice about it through constructor
-//what about exception throwing?
-
-bool MessageBody::pack(QDataStream &stream) const
+bool MessageBody::checkStreamState(QDataStream &stream)
 {
     if(stream.status() != QDataStream::Ok)
+    {
+        stream.device()->readAll().clear();
+        qDebug() << "Stream is not ready, clear all data in socket!";
         return false;
+    }
     return true;
 }
 
-bool MessageBody::unpack(QDataStream &stream)
+void MessageBody::pack(QDataStream &stream)
 {
-    if(stream.status() != QDataStream::Ok)
-        return false;
-    return true;
 }
 
-MessageHeader::MessageHeader(const MessageBody *msgBody)
+void MessageBody::unpack(QDataStream &stream)
+{
+}
+
+MessageHeader::MessageHeader(MessageBody *msgBody)
 {
     messageType = msgBody->messageType;
     messageSize = sizeof(*msgBody);
@@ -29,20 +30,29 @@ MessageHeader::MessageHeader(QDataStream &stream)
     unpack(stream);
 }
 
-bool MessageHeader::pack(QDataStream &stream) const
+bool MessageHeader::checkStreamState(QDataStream &stream)
 {
-    if (stream.status() != QDataStream::Ok)
+    if(stream.status() != QDataStream::Ok)
+    {
+        stream.device()->readAll().clear();
+        qDebug() << "Stream is not ready, clear all data in socket!";
         return false;
-    stream << messageType;
+    }
     return true;
 }
 
-bool MessageHeader::unpack(QDataStream &stream)
+void MessageHeader::pack(QDataStream &stream)
 {
-    if (stream.status() != QDataStream::Ok)
-        return false;
+    if(!checkStreamState(stream))
+        return;
+    stream << messageType;
+}
+
+void MessageHeader::unpack(QDataStream &stream)
+{
+    if(!checkStreamState(stream))
+        return;
     stream >> messageType;
-    return true;
 }
 
 AuthorizationAnswer::AuthorizationAnswer()
@@ -54,18 +64,15 @@ AuthorizationAnswer::AuthorizationAnswer(QDataStream &stream)
 {
     messageType = mtAuthorizationAnswer;
     unpack(stream);
-    //bad news that we will fault if stream.status is not ok because
-    //we hadn't any chance to notice about it through constructor
 }
 
-bool AuthorizationAnswer::unpack(QDataStream &stream)
+void AuthorizationAnswer::unpack(QDataStream &stream)
 {
-    if (stream.status() != QDataStream::Ok)
-        return false;
+    if(!checkStreamState(stream))
+        return;
     QByteArray array;
     stream >> authorizationResult >> array;
     denialReason = array;
-    return true;
 }
 
 AuthorizationRequest::AuthorizationRequest()
@@ -80,12 +87,11 @@ AuthorizationRequest::AuthorizationRequest(QDataStream &stream)
 
 }
 
-bool AuthorizationRequest::pack(QDataStream &stream) const
+void AuthorizationRequest::pack(QDataStream &stream)
 {
-    if (stream.status() != QDataStream::Ok)
-        return false;
+    if(!checkStreamState(stream))
+        return;
     stream << username.toUtf8() << password.toUtf8();
-    return true;
 }
 
 RegistrationRequest::RegistrationRequest()
@@ -93,12 +99,11 @@ RegistrationRequest::RegistrationRequest()
     messageType = mtRegistrationRequest;
 }
 
-bool RegistrationRequest::pack(QDataStream &stream) const
+void RegistrationRequest::pack(QDataStream &stream)
 {
-    if (stream.status() != QDataStream::Ok)
-        return false;
+    if(!checkStreamState(stream))
+        return;
     stream << username.toUtf8() << password.toUtf8();
-    return true;
 }
 
 RegistrationAnswer::RegistrationAnswer()
@@ -112,14 +117,13 @@ RegistrationAnswer::RegistrationAnswer(QDataStream &stream)
     unpack(stream);
 }
 
-bool RegistrationAnswer::unpack(QDataStream &stream)
+void RegistrationAnswer::unpack(QDataStream &stream)
 {
-    if (stream.status() != QDataStream::Ok)
-        return false;
+    if(!checkStreamState(stream))
+        return;
     QByteArray array;
     stream >> registrationResult >> array;
     denialReason = array;
-    return true;
 }
 
 StartInfoRequest::StartInfoRequest()
@@ -138,10 +142,10 @@ StartInfoAnswer::StartInfoAnswer(QDataStream &stream)
     unpack(stream);
 }
 
-bool StartInfoAnswer::unpack(QDataStream &stream)
+void StartInfoAnswer::unpack(QDataStream &stream)
 {
-    if(stream.status() != QDataStream::Ok)
-        return false;
+    if(!checkStreamState(stream))
+        return;
     QList<QByteArray> foldersList;
     QList<QByteArray> filesList;
     stream >> foldersList >> filesList >> rights;
@@ -149,7 +153,6 @@ bool StartInfoAnswer::unpack(QDataStream &stream)
         folders.append(QString(foldersList.value(i)));
     for(int i = 0; filesList.size(); i++)
         files.append(QString(filesList.value(i)));
-    return true;
 }
 
 
@@ -158,12 +161,11 @@ FolderContentRequest::FolderContentRequest()
     messageType = mtFolderContentsRequest;
 }
 
-bool FolderContentRequest::pack(QDataStream &stream) const
+void FolderContentRequest::pack(QDataStream &stream)
 {
-    if(stream.status() != QDataStream::Ok)
-        return false;
+    if(!checkStreamState(stream))
+        return;
     stream << path;
-    return true;
 }
 
 FolderContentAnswer::FolderContentAnswer()
@@ -177,10 +179,10 @@ FolderContentAnswer::FolderContentAnswer(QDataStream &stream)
     unpack(stream);
 }
 
-bool FolderContentAnswer::unpack(QDataStream &stream)
+void FolderContentAnswer::unpack(QDataStream &stream)
 {
-    if(stream.status() != QDataStream::Ok)
-        return false;
+    if(!checkStreamState(stream))
+        return;
     QList<QByteArray> foldersList;
     QList<QByteArray> filesList;
     stream >> foldersList >> filesList;
@@ -188,7 +190,6 @@ bool FolderContentAnswer::unpack(QDataStream &stream)
         folders.append(QString(foldersList.value(i)));
     for(int i = 0; filesList.size(); i++)
         files.append(QString(filesList.value(i)));
-    return true;
 }
 
 TransferInfo::TransferInfo()
@@ -202,22 +203,20 @@ TransferInfo::TransferInfo(QDataStream &stream)
     unpack(stream);
 }
 
-bool TransferInfo::pack(QDataStream &stream) const
+void TransferInfo::pack(QDataStream &stream)
 {
-    if(stream.status() != QDataStream::Ok)
-        return false;
+    if(!checkStreamState(stream))
+        return;
     stream  << filesNumber << filesSize << key.toUtf8();
-    return true;
 }
 
-bool TransferInfo::unpack(QDataStream &stream)
+void TransferInfo::unpack(QDataStream &stream)
 {
-    if(stream.status() != QDataStream::Ok)
-        return false;
+    if(!checkStreamState(stream))
+        return;
     QByteArray array;
     stream >> filesNumber >> filesSize >> array;
     key = array;
-    return true;
 }
 
 FileInfo::FileInfo()
@@ -225,24 +224,22 @@ FileInfo::FileInfo()
     messageType = mtFileInfo;
 }
 
-bool FileInfo::pack(QDataStream &stream) const
+void FileInfo::pack(QDataStream &stream)
 {
-    if(stream.status() != QDataStream::Ok)
-        return false;
+    if(!checkStreamState(stream))
+        return;
     stream << path.toUtf8()  << fileName.toUtf8() << fileSize;
-    return true;
 }
 
-bool FileInfo::unpack(QDataStream &stream)
+void FileInfo::unpack(QDataStream &stream)
 {
-    if(stream.status() != QDataStream::Ok)
-        return false;
+    if(!checkStreamState(stream))
+        return;
     QByteArray array1;
     QByteArray array2;
     stream >> array1 >> array2 >> fileSize;
     path = array1;
     fileName = array2;
-    return true;
 }
 
 
@@ -251,12 +248,11 @@ ActionWithFileRequest::ActionWithFileRequest()
     messageType = mtActionWithFileRequest;
 }
 
-bool ActionWithFileRequest::pack(QDataStream &stream) const
+void ActionWithFileRequest::pack(QDataStream &stream)
 {
-    if(stream.status() != QDataStream::Ok)
-        return false;
+    if(!checkStreamState(stream))
+        return;
     stream << actionType  << fileName.toUtf8();
-    return true;
 }
 
 ActionWithFileAnswer::ActionWithFileAnswer()
@@ -270,14 +266,13 @@ ActionWithFileAnswer::ActionWithFileAnswer(QDataStream &stream)
     unpack(stream);
 }
 
-bool ActionWithFileAnswer::unpack(QDataStream &stream)
+void ActionWithFileAnswer::unpack(QDataStream &stream)
 {
-    if(stream.status() != QDataStream::Ok)
-        return false;
+    if(!checkStreamState(stream))
+        return;
     QByteArray array;
     stream >> array >> answer;
     key = array;
-    return true;
 }
 
 CreateFolderMessage::CreateFolderMessage()
@@ -291,24 +286,22 @@ CreateFolderMessage::CreateFolderMessage(QDataStream &stream)
     unpack(stream);
 }
 
-bool CreateFolderMessage::pack(QDataStream &stream) const
+void CreateFolderMessage::pack(QDataStream &stream)
 {
-    if(stream.status() != QDataStream::Ok)
-        return false;
+    if(!checkStreamState(stream))
+        return;
     stream << path.toUtf8() << folderName.toUtf8();
-    return true;
 }
 
-bool CreateFolderMessage::unpack(QDataStream &stream)
+void CreateFolderMessage::unpack(QDataStream &stream)
 {
-    if(stream.status() != QDataStream::Ok)
-        return false;
+    if(!checkStreamState(stream))
+        return;
     QByteArray array1;
     QByteArray array2;
     stream >> array1 >> array2;
     path = array1;
     folderName = array2;
-    return true;
 }
 
 TransferRejected::TransferRejected()
@@ -322,20 +315,18 @@ TransferRejected::TransferRejected(QDataStream &stream)
     unpack(stream);
 }
 
-bool TransferRejected::pack(QDataStream &stream) const
+void TransferRejected::pack(QDataStream &stream)
 {
-    if(stream.status() != QDataStream::Ok)
-        return false;
+    if(!checkStreamState(stream))
+        return;
     stream << message.toUtf8();
-    return true;
 }
 
-bool TransferRejected::unpack(QDataStream &stream)
+void TransferRejected::unpack(QDataStream &stream)
 {
-    if(stream.status() != QDataStream::Ok)
-        return false;
+    if(!checkStreamState(stream))
+        return;
     QByteArray array;
     stream >> array;
     message = array;
-    return true;
 }

@@ -5,6 +5,7 @@
 #include <QString>
 #include <QStringList>
 #include <QMap>
+#include <QDebug>
 
 enum MessageType
 {
@@ -39,20 +40,22 @@ public:
     MessageBody() {}
     virtual ~MessageBody() {}
     quint8 messageType;
-    virtual bool pack(QDataStream &stream) const;
-    virtual bool unpack(QDataStream &stream);
+    bool checkStreamState(QDataStream &stream);
+    virtual void pack(QDataStream &stream);
+    virtual void unpack(QDataStream &stream);
 };
 
 class MessageHeader
 {
 public:
     MessageHeader() {}
-    MessageHeader(const MessageBody *msgBody);
+    MessageHeader(MessageBody *msgBody);
     MessageHeader(QDataStream &stream);
     quint8 messageType;
     quint32 messageSize;
-    bool pack(QDataStream &stream) const;
-    bool unpack(QDataStream &stream);
+    bool checkStreamState(QDataStream &stream);
+    void pack(QDataStream &stream);
+    void unpack(QDataStream &stream);
 };
 
 class AuthorizationAnswer: public MessageBody
@@ -62,7 +65,7 @@ public:
     AuthorizationAnswer(QDataStream &stream);
     bool authorizationResult;
     QString denialReason;
-    bool unpack(QDataStream &stream);
+    void unpack(QDataStream &stream);
 };
 
 class AuthorizationRequest: public MessageBody
@@ -72,7 +75,7 @@ public:
     AuthorizationRequest(QDataStream &stream);
     QString username;
     QString password;
-    bool pack(QDataStream &stream) const;
+    void pack(QDataStream &stream);
 };
 
 class RegistrationRequest: public MessageBody
@@ -81,7 +84,7 @@ public:
     RegistrationRequest();
     QString username;
     QString password;
-    bool pack(QDataStream &stream) const;
+    void pack(QDataStream &stream);
 };
 
 class RegistrationAnswer: public MessageBody
@@ -91,7 +94,7 @@ public:
     RegistrationAnswer(QDataStream &stream);
     bool registrationResult;
     QString denialReason;
-    bool unpack(QDataStream &stream);
+    void unpack(QDataStream &stream);
 };
 
 class StartInfoRequest: public MessageBody
@@ -108,7 +111,7 @@ public:
     QStringList folders;
     QStringList files;
     quint8 rights;
-    bool unpack(QDataStream &stream);
+    void unpack(QDataStream &stream);
 };
 
 class FolderContentRequest: public MessageBody
@@ -116,7 +119,7 @@ class FolderContentRequest: public MessageBody
 public:
     FolderContentRequest();
     QString path;
-    bool pack(QDataStream &stream) const;
+    void pack(QDataStream &stream);
 };
 
 class FolderContentAnswer: public MessageBody
@@ -126,7 +129,7 @@ public:
     FolderContentAnswer(QDataStream &stream);
     QStringList folders;
     QStringList files;
-    bool unpack(QDataStream &stream);
+    void unpack(QDataStream &stream);
 };
 
 class TransferInfo: public MessageBody
@@ -137,8 +140,8 @@ public:
     quint64 filesSize;
     quint32 filesNumber;
     QString key;
-    bool pack(QDataStream &stream) const;
-    bool unpack(QDataStream &stream);
+    void pack(QDataStream &stream);
+    void unpack(QDataStream &stream);
 };
 
 class FileInfo: public MessageBody
@@ -149,8 +152,8 @@ public:
     QString path;
     QString fileName;
     quint64 fileSize;
-    bool pack(QDataStream &stream) const;
-    bool unpack(QDataStream &stream);
+    void pack(QDataStream &stream);
+    void unpack(QDataStream &stream);
 };
 
 class ActionWithFileRequest: public MessageBody
@@ -159,7 +162,7 @@ public:
     ActionWithFileRequest();
     quint8 actionType;
     QString fileName;
-    bool pack(QDataStream &stream) const;
+    void pack(QDataStream &stream);
 };
 
 class ActionWithFileAnswer: public MessageBody
@@ -169,7 +172,7 @@ public:
     ActionWithFileAnswer(QDataStream &stream);
     QString key;
     bool answer;
-    bool unpack(QDataStream &stream);
+    void unpack(QDataStream &stream);
 };
 
 class CreateFolderMessage: public MessageBody
@@ -179,8 +182,8 @@ public:
     CreateFolderMessage(QDataStream &stream);
     QString path;
     QString folderName;
-    bool pack(QDataStream &stream) const;
-    bool unpack(QDataStream &stream);
+    void pack(QDataStream &stream);
+    void unpack(QDataStream &stream);
 };
 
 class TransferRejected: public MessageBody
@@ -189,8 +192,8 @@ public:
     TransferRejected();
     TransferRejected(QDataStream &stream);
     QString message;
-    bool pack(QDataStream &stream) const;
-    bool unpack(QDataStream &stream);
+    void pack(QDataStream &stream);
+    void unpack(QDataStream &stream);
 };
 
 #endif // PROTOCOL_H
