@@ -1,5 +1,4 @@
 #include "filemanager.h"
-#include <QDebug>
 
 FileManagerItem::FileManagerItem(QListWidget *parent) :
     QListWidgetItem(parent)

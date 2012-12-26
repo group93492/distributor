@@ -1,6 +1,5 @@
 #include "filedialog.h"
 #include "ui_filedialog.h"
-#include <QDebug>
 
 FileDialog::FileDialog(QWidget *parent) :
     QDialog(parent),
@@ -93,6 +92,6 @@ QStringList FileDialog::selectedFiles(QStringList folders)
 
 void FileDialog::on_pathEdit_textChanged(const QString &arg1)
 {
-    if(QDir::isAbsolutePath(ui->pathEdit->text()))
-        ui->listView->setRootIndex(m_listModel.index(ui->pathEdit->text()));
+    if(QDir::isAbsolutePath(arg1))
+        ui->listView->setRootIndex(m_listModel.index(arg1));
 }

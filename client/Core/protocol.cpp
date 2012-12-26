@@ -5,7 +5,7 @@ bool MessageBody::checkStreamState(QDataStream &stream)
     if(stream.status() != QDataStream::Ok)
     {
         stream.device()->readAll().clear();
-        qDebug() << "Stream is not ready, clear all data in socket!";
+        qWarning() << "Stream is not ready, clear all data in socket!";
         return false;
     }
     return true;
@@ -35,7 +35,7 @@ bool MessageHeader::checkStreamState(QDataStream &stream)
     if(stream.status() != QDataStream::Ok)
     {
         stream.device()->readAll().clear();
-        qDebug() << "Stream is not ready, clear all data in socket!";
+        qWarning() << "Stream is not ready, clear all data in socket!";
         return false;
     }
     return true;

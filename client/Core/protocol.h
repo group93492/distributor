@@ -1,11 +1,11 @@
 #ifndef PROTOCOL_H
 #define PROTOCOL_H
 
+#include <QtDebug>
 #include <QDataStream>
 #include <QString>
 #include <QStringList>
 #include <QMap>
-#include <QDebug>
 
 enum MessageType
 {

@@ -31,7 +31,6 @@ void TcpClient::sendStartInfoRequest()
 
 void TcpClient::requestFolderContents(QString path)
 {
-    qDebug() << "Request folder contents:" << path;
     FolderContentRequest *msg = new FolderContentRequest;
     msg->path = path;
     sendMessageToServer(msg);
@@ -92,7 +91,7 @@ void TcpClient::clientGotNewMessage()
         default:
         {
             socket->readAll().clear();
-            qDebug() << "Client received unknown-typed message" << msgType;
+            qWarning() << "Client received unknown-typed message" << msgType;
             break;
         }
         }

@@ -160,7 +160,7 @@ void AuthDialog::gotMessage()
         default:
         {
             socket->readAll().clear();
-            qDebug() << "Client received unknown-typed message";
+            qWarning() << "Client received unknown-typed message";
             break;
         }
         }
