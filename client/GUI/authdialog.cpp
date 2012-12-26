@@ -159,7 +159,8 @@ void AuthDialog::gotMessage()
         }
         default:
         {
-            QMessageBox::warning(this, "Error", "Client received unknown-typed message", QMessageBox::Ok);
+            socket->readAll().clear();
+            qDebug() << "Client received unknown-typed message";
             break;
         }
         }
