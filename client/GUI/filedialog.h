@@ -22,6 +22,8 @@ private slots:
     void on_treeView_clicked(const QModelIndex &index);
     void on_listView_doubleClicked(const QModelIndex &index);
 
+    void on_pathEdit_textChanged(const QString &arg1);
+
 private:
     Ui::FileDialog *ui;
     QFileSystemModel m_treeModel;
