@@ -90,10 +90,11 @@ void TcpClient::clientGotNewMessage()
             break;
         }
         default:
-            {
-                qDebug() << "Client received unknown-typed message" << msgType;
-                break;
-            }
+        {
+            socket->readAll().clear();
+            qDebug() << "Client received unknown-typed message" << msgType;
+            break;
+        }
         }
         m_nextBlockSize = 0;
     }
