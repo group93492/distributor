@@ -90,6 +90,11 @@ QStringList FileDialog::selectedFiles(QStringList folders)
     return files;
 }
 
+QModelIndexList FileDialog::selectedItems()
+{
+    return m_selectedItems;
+}
+
 void FileDialog::on_pathEdit_textChanged(const QString &arg1)
 {
     if(QDir::isAbsolutePath(arg1))

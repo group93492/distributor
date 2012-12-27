@@ -16,6 +16,7 @@ public:
     explicit FileDialog(QWidget *parent = 0);
     QStringList selectedFolders();
     QStringList selectedFiles(QStringList folders);
+    QModelIndexList selectedItems();
     ~FileDialog();
     
 private slots:
