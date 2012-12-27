@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    qsrand(QTime::currentTime().msec());
     ui->actionDownload->setIcon(QIcon("icons/download.png"));
     ui->actionUpload->setIcon(QIcon("icons/upload.png"));
     ui->actionDelete->setIcon(QIcon("icons/delete.png"));
@@ -70,13 +71,9 @@ void MainWindow::on_actionUpload_triggered()
 {
     FileDialog dialog;
     dialog.exec();
-    qDebug() << dialog.selectedFiles(dialog.selectedFolders()).size();
-    qDebug() << "";
-    qDebug() << "";
-    qDebug() << "";
-    qDebug() << "";
-    qDebug() << "";
-    qDebug() << dialog.selectedFolders().size();
+    m_tcpClient.setBufferData(dialog.selectedFolders(), dialog.selectedFiles(dialog.selectedFolders()), atUpload);
+    QString randomString = dialog.selectedItems().value(qrand() % dialog.selectedItems().size()).data().toString();
+    m_tcpClient.requestActionWithFiles(randomString, atUpload);
 }
 
 void MainWindow::on_actionAboutQt_triggered()

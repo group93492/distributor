@@ -5,6 +5,7 @@
 #include <QtNetwork/QTcpSocket>
 #include <QHostAddress>
 #include <QFileDialog>
+#include <QTime>
 #include "Core/tcpclient.h"
 #include "GUI/filemanager.h"
 #include "GUI/filedialog.h"
